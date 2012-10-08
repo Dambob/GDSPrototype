@@ -1,0 +1,7 @@
+Flash actually uses bounding boxes for collisions.
+
+http://sierakowski.eu/list-of-tips/39-collision-detection-methods-hittest-and-hittestobject-alternatives.html
+
+This page gives solutions for both vector and bitmap collisions, as well as 
+transformation based ones.
+Also it allows a neater way to detect collisions over the whole level.
