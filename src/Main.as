@@ -1,5 +1,6 @@
 package 
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.display.StageScaleMode; 
@@ -8,8 +9,11 @@ package
 	 * ...
 	 * @author 
 	 */
-	public class Main extends Sprite 
+	public class Main extends MovieClip 
 	{
+		
+	
+    public var PushBlock1:PushBlock = null; // strongly typed
 		
 		public var level:Level = null;
 		public var player1:Player =  null;
@@ -45,13 +49,15 @@ package
 			traps = new Array;
 			spawns = new Array;
 			rock2 = new rock;
+			PushBlock1 = new PushBlock;
 			
 			stage.addChild(level);
 			
 			for (var i:int = 0; i < level.numChildren; i++)
 			{
 				var object:Object = level.getChildAt(i);
-				
+				trace(level.numChildren + " children in level");
+				trace(object.name);
 				if (object is Player)
 				{
 					trace("Found player at " + i);
@@ -98,7 +104,10 @@ package
 					rock2 = object as rock;
 					
 				}
-				
+				else if (object is PushBlock) {
+					trace("Found block at " + i);
+				PushBlock1 = object as PushBlock;
+				}
 			}
 				
 			
@@ -179,7 +188,7 @@ package
 				}
 				
 				rock2.Update();
-				
+				PushBlock1.Update();
 				for (i = 0; i < triggers.length; i++)
 				{
 					var trigger:Trigger = triggers[i];
@@ -193,6 +202,11 @@ package
 					rock2.roll(player1);
 				}
 				
+				if (player1.hitTestObject(PushBlock1 ))
+				{
+					trace("hit block");
+					PushBlock1.roll(player1);
+				}
 			}		
 					
 		}

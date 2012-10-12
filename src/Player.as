@@ -21,7 +21,7 @@ package
 		private var bRight:Boolean = false;
 		
 		private var bToggle:Boolean = false;
-		
+		public var maxVel:int = 5;
 		public var bJumping:Boolean = false;
 		private var JumpCounter:int = 0;
 		private var bFalling:Boolean = false;
@@ -143,21 +143,22 @@ package
 			//No horizontal velocity but can be added in easily.
 			if (bRight)
 			{
-				x += 5;
+				x += maxVel;
 				
 				//Apply inverse to level for scrolling 
-				level.x -= 5;
+				level.x -= maxVel;
 				
 				animScale = 1;
 			}
 			else if (bLeft)
 			{
-				x -= 5;
+				x -= maxVel;
 				
-				level.x += 5;
+				level.x += maxVel;
 				
 				animScale = -1;
 			}
+			maxVel = 5;
 						
 		}
 		
