@@ -22,6 +22,7 @@ package
 		public var traps:Array =  null;
 		public var spawns:Array =  null;
 		public var rock2:rock =  null;
+		public var ClimbingVine1:ClimbingVine =  null;
 		
 		public var myCollisionList:CollisionList;
 		
@@ -62,6 +63,7 @@ package
 				{
 					trace("Found player at " + i);
 					player1 = object as Player;
+					player1.main = this;
 					player1.level = level;
 				}
 				else if (object is Block)
@@ -108,6 +110,10 @@ package
 					trace("Found block at " + i);
 				PushBlock1 = object as PushBlock;
 				PushBlock1.main = this;
+				}
+				else if (object is ClimbingVine) {
+					trace("Found Vine at " + i);
+				ClimbingVine1 = object as ClimbingVine;
 				}
 			}
 				
