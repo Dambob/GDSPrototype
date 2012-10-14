@@ -9,7 +9,7 @@ package
 	 * ...
 	 * @author 
 	 */
-	public class Main extends MovieClip 
+	public class Main extends Sprite 
 	{
 		
 	
