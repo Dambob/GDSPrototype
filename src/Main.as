@@ -107,6 +107,7 @@ package
 				else if (object is PushBlock) {
 					trace("Found block at " + i);
 				PushBlock1 = object as PushBlock;
+				PushBlock1.main = this;
 				}
 			}
 				
