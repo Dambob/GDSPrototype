@@ -14,14 +14,14 @@ package
 		
 		private var State:int = 0;
 		
-		public var level:Level = null;
+		public var level:baseFlashLevel = null;
 		
 		private var bUp:Boolean = false;
 		private var bLeft:Boolean = false;
 		private var bRight:Boolean = false;
 		
 		private var bToggle:Boolean = false;
-		
+		public var maxVel:int = 5;
 		public var bJumping:Boolean = false;
 		private var JumpCounter:int = 0;
 		private var bFalling:Boolean = false;
@@ -127,11 +127,20 @@ package
 			if (block == null || bJumping)
 			{
 				y -= velocity;
+				
+				if (velocity < 0)
+				{
+					//play falling anim
+					//playAnim(fallAnim);
+				}
 			}
 			else if (block != null)
 			{				
 				bFalling = false;
 				velocity = 0;
+				
+				//Play landing anim
+				//playAnim(landingAnim);
 				
 				y = block.y - height / 2 - block.height / 2;
 			}
@@ -146,21 +155,23 @@ package
 			//No horizontal velocity but can be added in easily.
 			if (bRight)
 			{
-				x += 5;
+				x += maxVel;
 				
 				//Apply inverse to level for scrolling 
-				level.x -= 5;
+				level.x -= maxVel;
 				
 				animScale = 1;
 			}
 			else if (bLeft)
 			{
-				x -= 5;
+				x -= maxVel;
 				
-				level.x += 5;
+				level.x += maxVel;
 				
 				animScale = -1;
 			}
+			
+			maxVel = 5;
 						
 		}
 		
@@ -210,7 +221,7 @@ package
 				bJumping = false;
 				bFalling = true;
 			}
-
+			
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void
