@@ -33,7 +33,7 @@ package
 		private var currentAnim:MovieClip = null;
 		private var idleAnim:MovieClip = new IdleAnim();
 		private var runAnim:MovieClip = new RunAnim();
-		private var jumpAnim:MovieClip = new IdleAnim();
+		private var jumpAnim:MovieClip = new JumpAnim();
 		private var deathAnim:MovieClip = new IdleAnim();
 		private var animScale:int = 1;
 	
@@ -93,7 +93,10 @@ package
 					break;
 					
 				case 2: //jumping
-					playAnim(jumpAnim);
+					if (currentAnim != jumpAnim)
+					{
+						playAnim(jumpAnim);
+					}
 					
 					Jump();
 					
@@ -212,7 +215,7 @@ package
 		
 		private function onKeyDown(event:KeyboardEvent):void
 		{
-			if (event.keyCode == 87)
+			if (event.keyCode == 32)
 			{
 				bUp = true;				
 			}
@@ -232,7 +235,7 @@ package
 		
 		private function onKeyUp(event:KeyboardEvent):void
 		{
-			if (event.keyCode == 87)
+			if (event.keyCode == 32)
 			{
 				bUp = false;
 			}
