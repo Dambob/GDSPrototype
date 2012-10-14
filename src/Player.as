@@ -12,6 +12,8 @@ package
 	public class Player extends myObject 
 	{
 		
+		public var main:Main = null;
+		
 		private var State:int = 0;
 		
 		public var level:Level = null;
@@ -19,9 +21,9 @@ package
 		private var bUp:Boolean = false;
 		private var bLeft:Boolean = false;
 		private var bRight:Boolean = false;
-		
+		private var bClimb:Boolean = false;
 		private var bToggle:Boolean = false;
-		
+		public var maxVel:int = 5;
 		public var bJumping:Boolean = false;
 		private var JumpCounter:int = 0;
 		private var bFalling:Boolean = false;
@@ -59,7 +61,12 @@ package
 		
 		private function UpdateState():void
 		{
-			
+		
+			if (bClimb){
+				velocity = 5;
+				State = 2;
+				bJumping = true;
+			}
 			if (bDead)
 			{
 				State = 3;
@@ -143,21 +150,22 @@ package
 			//No horizontal velocity but can be added in easily.
 			if (bRight)
 			{
-				x += 5;
+				x += maxVel;
 				
 				//Apply inverse to level for scrolling 
-				level.x -= 5;
+				level.x -= maxVel;
 				
 				animScale = 1;
 			}
 			else if (bLeft)
 			{
-				x -= 5;
+				x -= maxVel;
 				
-				level.x += 5;
+				level.x += maxVel;
 				
 				animScale = -1;
 			}
+			maxVel = 5;
 						
 		}
 		
@@ -212,9 +220,17 @@ package
 		
 		private function onKeyDown(event:KeyboardEvent):void
 		{
-			if (event.keyCode == 87)
+			if (event.keyCode == 32)
 			{
 				bUp = true;				
+			}
+			else if (event.keyCode == 87)
+			{
+				
+				if (main.ClimbingVine1.hitTestObject(this))
+					bClimb = true;
+				else
+					bClimb = false;
 			}
 			else if (event.keyCode == 65)
 			{
@@ -232,9 +248,12 @@ package
 		
 		private function onKeyUp(event:KeyboardEvent):void
 		{
-			if (event.keyCode == 87)
+			if (event.keyCode == 32)
+			bUp = false;
+			else if (event.keyCode == 87)
 			{
-				bUp = false;
+				
+					bClimb = false;
 			}
 			else if (event.keyCode == 65)
 			{

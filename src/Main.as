@@ -1,5 +1,6 @@
 package 
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.display.StageScaleMode; 
@@ -11,6 +12,9 @@ package
 	public class Main extends Sprite 
 	{
 		
+	
+    public var PushBlock1:PushBlock = null; // strongly typed
+		
 		public var level:Level = null;
 		public var player1:Player =  null;
 		public var blocks:Array =  null;
@@ -18,6 +22,7 @@ package
 		public var traps:Array =  null;
 		public var spawns:Array =  null;
 		public var rock2:rock =  null;
+		public var ClimbingVine1:ClimbingVine =  null;
 		
 		public var myCollisionList:CollisionList;
 		
@@ -45,17 +50,20 @@ package
 			traps = new Array;
 			spawns = new Array;
 			rock2 = new rock;
+			PushBlock1 = new PushBlock;
 			
 			stage.addChild(level);
 			
 			for (var i:int = 0; i < level.numChildren; i++)
 			{
 				var object:Object = level.getChildAt(i);
-				
+				trace(level.numChildren + " children in level");
+				trace(object.name);
 				if (object is Player)
 				{
 					trace("Found player at " + i);
 					player1 = object as Player;
+					player1.main = this;
 					player1.level = level;
 				}
 				else if (object is Block)
@@ -98,7 +106,15 @@ package
 					rock2 = object as rock;
 					
 				}
-				
+				else if (object is PushBlock) {
+					trace("Found block at " + i);
+				PushBlock1 = object as PushBlock;
+				PushBlock1.main = this;
+				}
+				else if (object is ClimbingVine) {
+					trace("Found Vine at " + i);
+				ClimbingVine1 = object as ClimbingVine;
+				}
 			}
 				
 			
@@ -179,7 +195,7 @@ package
 				}
 				
 				rock2.Update();
-				
+				PushBlock1.Update();
 				for (i = 0; i < triggers.length; i++)
 				{
 					var trigger:Trigger = triggers[i];
@@ -193,6 +209,11 @@ package
 					rock2.roll(player1);
 				}
 				
+				if (player1.hitTestObject(PushBlock1 ))
+				{
+					trace("hit block");
+					PushBlock1.roll(player1);
+				}
 			}		
 					
 		}
