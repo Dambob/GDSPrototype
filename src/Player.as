@@ -62,10 +62,16 @@ package
 		private function UpdateState():void
 		{
 		
-			if (bClimb){
+			if (bClimb) {
+				if (main.ClimbingVine1.hitTestObject(this)){
 				velocity = 5;
-				State = 2;
 				bJumping = true;
+				}else {
+					velocity = 0;
+				bJumping = true;
+					bClimb = false;
+				}
+				
 			}
 			if (bDead)
 			{
@@ -227,10 +233,8 @@ package
 			else if (event.keyCode == 87)
 			{
 				
-				if (main.ClimbingVine1.hitTestObject(this))
+				
 					bClimb = true;
-				else
-					bClimb = false;
 			}
 			else if (event.keyCode == 65)
 			{
