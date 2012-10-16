@@ -104,6 +104,9 @@ package
 			//Allows to us to see all objects colliding with the one we care about.
 			
 			//Object we are interested in
+			
+			var Collision:Event = new Event("COLLISION");
+			
 			myCollisionList = new CollisionList(triggerTrap);
 			
 			//items we care about
@@ -118,6 +121,7 @@ package
 				{
 					// tracing the name of the colliding object collisions[i].object1:
 					trace(collisions[i].object1.name);
+					stage.dispatchEvent(Collision);
 				}
 				trace("No More collisions");
 			}
@@ -174,6 +178,14 @@ package
 				}
 				
 			}		
+		}
+		
+		public function Delete():void
+		{
+			stageLink.removeChild(level)
+			
+			level = null;
+			
 		}
 		
 	}

@@ -155,6 +155,13 @@ package
 			
 		}
 		
+		public function Delete():void
+		{
+			stageLink.removeChild(level)
+			
+			level = null;
+			
+		}
 	}
 
 }
