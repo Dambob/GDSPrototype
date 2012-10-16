@@ -4,28 +4,25 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	
-<<<<<<< HEAD
 	public class PushBlock extends myObject 
 	{
 		
 		private var accel:int = 0;
 		private var speed:int = 0;
 		private var weight:int = 2;
+		private var vY:int = 0;
+		
+		public var block1:Block = null;
+		public var velocity:int = 0;
+		
 		public function PushBlock() 
 		{
-=======
-	public class PushBlock extends myObject {
-		public var main:Main = null;
-		private var vY:int = 0;
-		public function PushBlock() {
->>>>>>> origin/brian
 			// constructor code
 		}
 		
 		// Function called every frame to handle  ball movement & rotation.
 		public function Update():void 
 		{			
-<<<<<<< HEAD
 			speed += accel;	// Change speed based on acceleration (Frame rate dependent but should be fine for this project)
 			
 			//rotation += speed / 3; // Rotate ball based on speed of ball, 3 is a magic number to make rotation believable assuming no sliding motion
@@ -42,32 +39,57 @@
 			else if (x < 0)
 			{
 				speed = 0;
-	*/	}
-=======
-
-			for (var i:int = 0; i < main.blocks.length; i++) 
+			}
+	*/	
+			
+			//gravity
+			//similar to player
+			
+			if (block1 == null)
+			{
+				velocity -= 1;
+				
+				y -= velocity;
+			}
+			else if (block1 != null)
+			{				
+				if (block1.y - (block1.height/2) >= y)
 				{
-					var block:Block = main.blocks[i];
+					velocity = 0;
 					
-					if (hitTestObject(block))
-					{
-						
-						if (y <= block.y)
-						{
-							vY = 0;
-							break;
-						}
-					}
-					else
-					{
-						vY++;
-					}
+					y = block1.y - height / 2 - block1.height / 2;
+				}
+			}
+			
+		}
+
+		//Some function
+		public function collisionOrSomething():void
+		{
+		/*	for (var i:int = 0; i < main.blocks.length; i++) 
+			{
+				var block:Block = main.blocks[i];
+				
+				if (hitTestObject(block))
+				{
 					
+					if (y <= block.y)
+					{
+						vY = 0;
+						break;
+					}
+				}
+				else
+				{
+					vY++;
 				}
 				
+			}
+				
 				y += vY;
+				
+		*/
 		}
->>>>>>> origin/brian
 		
 		// Function called on player impact with ball
 		public function roll(p:Player):void
@@ -78,15 +100,15 @@
 			
 			if (direction > 0)
 			{
-				x = p.x + (p.width / 2);
+				x = p.x + (p.width / 2) + (width/2);
 			}
 			else
 			{
-				x = p.x - (p.width / 2) - width;
+				x = p.x - (p.width / 2) - (width/2);
 			}
 			
 			p.maxVel = 2;
 		}
-	
 	}
+	
 }

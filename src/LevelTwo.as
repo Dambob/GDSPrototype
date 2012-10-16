@@ -17,6 +17,7 @@ package
 		private var spawn:playerSpawn = null;
 		private var killboxes:Array = null;
 		private var vine:climbingVine = null;
+		private var crates:Array = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -37,6 +38,7 @@ package
 			spawn = new playerSpawn;
 			killboxes = new Array;
 			vine = new climbingVine;
+			crates = new Array;
 				
 			stageLink = stageRef;
 			
@@ -59,8 +61,7 @@ package
 					trace("Found block at " + i);
 					var block1:Block = object as Block;
 					
-					blocks.push(block1);
-					
+					blocks.push(block1);	
 				}
 				else if (object is playerSpawn)
 				{
@@ -79,6 +80,14 @@ package
 					trace("Found vine at " + i);
 
 					vine = object as climbingVine;
+				}
+				else if (object is Crate)
+				{
+					trace("Found crate at " + i);
+					var crate:Crate = object as Crate;
+					
+					crates.push(crate);
+					
 				}
 			}	
 			
@@ -108,28 +117,8 @@ package
 				
 				player1.Update(e);
 
-				/* block collision */
-				for (var i:int = 0; i < blocks.length; i++) 
-				{
-					var block:Block = blocks[i];
-					
-					if (player1.hitTestObject(block))
-					{
-						
-						if (player1.y <= block.y)
-						{
-							player1.block = block;
-													
-							//Breaks out of for loop
-							i = blocks.length - 1;
-							
-						}
-					}
-					else
-					{
-						player1.block = null;
-					}	
-				}
+				
+				playerBlockCollision();
 				
 				for (var i:int = 0; i < killboxes.length; i++) 
 				{
@@ -150,9 +139,121 @@ package
 				{
 					player1.bCanClimb = false;
 				}
+				
+				for (var i:int = 0; i < crates.length; i++)
+				{
+					//crate colliding with platforms
+					
+					var crate:Crate = crates[i];
+										
+					for (var j:int = 0; j < blocks.length; j++) 
+					{
+						var block:Block = blocks[j];
+						
+						if (crate.hitTestObject(block))
+						{
+							
+							if (crate.y <= block.y)
+							{
+								crate.block1 = block;
+														
+								//Breaks out of for loop
+								j = blocks.length - 1;
+								
+							}
+						}
+						else
+						{
+							crate.block1 = null;
+						}	
+					}
+					
+					
+					if (player1.hitTestObject(crate))
+					{
+						
+						var playerFeet:int = player1.y + (player1.height / 2);
+						var playerHead:int = player1.y - (player1.height / 2);
+						
+						var crateTop:int = crate.y - (crate.height / 2);
+						var crateBottom:int = crate.y + (crate.height / 2);
+						
+						if ( (playerHead < crateTop) && (playerFeet > crateBottom) )
+						{
+							trace("pushing");
+							crate.roll(player1);
+						}
+	/*					else if (playerFeet < crateBottom)
+						{
+							trace("above");
+							if ( player1.block == null )
+							{
+								trace("Player on block!");
+								player1.block = crate as Block;
+							}
+						}
+						
+	*/				
+					}
+					
+					
+					crate.Update();
+				}
 
 			}		
 			
+		}
+		
+		private function playerBlockCollision():void
+		{
+			
+			/* block collision */
+				
+			player1.block = null;
+				
+			for (var i:int = 0; i < blocks.length; i++) 
+			{
+				var block:Block = blocks[i];
+				
+				if (player1.hitTestObject(block))
+				{
+					
+					if (player1.y <= block.y)
+					{
+						player1.block = block;
+												
+						//Breaks out of for loop
+						//i = blocks.length - 1;
+						trace("On static block");
+						
+						return;
+						
+					}
+				}	
+			}
+						
+			//if player isn't on a static block, check to see if he's on a moveable one
+			for (var i:int = 0; i < crates.length; i++)
+			{
+				var crate:Crate = crates[i];
+				
+				if (player1.hitTestObject(crate))
+				{
+					if (player1.y + player1.height/2 < crate.y - crate.height/2 + 10)
+					{
+						player1.block = crate as Block;
+												
+						//Breaks out of for loop
+						i = crates.length - 1;
+						
+						trace("on crate");
+						
+						return;
+						
+					}
+				}
+			}
+
 		}
 		
 		public function Delete():void
