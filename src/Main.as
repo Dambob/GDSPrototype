@@ -34,7 +34,7 @@ package
 			stage.scaleMode = StageScaleMode.EXACT_FIT
 			
 			//Init everthing here
-			currentLevel = 1;		
+			currentLevel = 2;		
 			
 			
 			
@@ -63,7 +63,7 @@ package
 					}
 					
 					break;
-				/*																	Ready to create level two
+					
 				case 2:
 					
 					if (level2 != null)
@@ -77,7 +77,6 @@ package
 					}
 					
 					break;
-					*/
 			}
 			
 		}

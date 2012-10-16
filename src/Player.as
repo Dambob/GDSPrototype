@@ -37,7 +37,11 @@ package
 		private var runAnim:MovieClip = new RunAnim();
 		private var jumpAnim:MovieClip = new JumpAnim();
 		private var deathAnim:MovieClip = new IdleAnim();
+		private var climbAnim:MovieClip = new IdleAnim();
 		private var animScale:int = 1;
+		
+		public var bCanClimb:Boolean = false;
+		
 	
 		private var velocity:int = 0;
 		
@@ -61,20 +65,12 @@ package
 		
 		private function UpdateState():void
 		{
-		/*
-			if (bClimb) {
-				if (main.ClimbingVine1.hitTestObject(this)){
-				velocity = 5;
-				bJumping = true;
-				}else {
-					velocity = 0;
-				bJumping = true;
-					bClimb = false;
-				}
-				
+			
+			if (bClimb) 
+			{
+				State = 4;				
 			}
-		*/
-			if (bDead)
+			else if (bDead)
 			{
 				State = 3;
 			}			
@@ -123,7 +119,23 @@ package
 					//Currently redundant as level is recreated on death
 					//Keep as it may be useful with larger levels
 					Respawn();
-					break;				
+					break;
+				case 4: //climbing
+					playAnim(climbAnim);
+					
+					if (bCanClimb)
+					{
+						velocity = 5;
+						bJumping = true;
+					}
+					else
+					{
+						velocity = 0;
+						bJumping = true;
+						bClimb = false;
+					}
+					
+					break;
 			}
 						
 			//Gravity
@@ -141,6 +153,7 @@ package
 			if (block == null || bJumping)
 			{
 				y -= velocity;
+				level.y += velocity;
 				
 				if (velocity < 0)
 				{
@@ -150,13 +163,20 @@ package
 			}
 			else if (block != null)
 			{				
-				bFalling = false;
-				velocity = 0;
-				
-				//Play landing anim
-				//playAnim(landingAnim);
-				
-				y = block.y - height / 2 - block.height / 2;
+				if (block.y - (block.height/2) >= y)
+				{
+					bFalling = false;
+					velocity = 0;
+					
+					//Play landing anim
+					//playAnim(landingAnim);
+					
+					y = block.y - height / 2 - block.height / 2;
+				}
+				else
+				{
+					bFalling = true;
+				}
 			}
 			
 			//Reverses the animation on the X if appropriate
@@ -259,6 +279,10 @@ package
 			else if (event.keyCode == 69)
 			{
 				bToggle = true;
+			}
+			else if (event.keyCode == 75)			//Suicide
+			{
+				bDead = true;
 			}
 		}
 		

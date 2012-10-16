@@ -15,10 +15,10 @@ package
 		private var level:Level1 = null;
 		private var player1:Player =  null;
 		private var blocks:Array =  null;
-		private var triggers:Array =  null;
+		private var triggerTrap:TriggerFalling =  null;
 		private var trap:fallingTrap =  null;
 		private var spawn:playerSpawn =  null;
-		private var rock2:rock =  null;
+		private var rock2:rock =  null;	
 		
 		private var stageLink:Stage;
 		
@@ -35,7 +35,7 @@ package
 			level = new Level1;
 			player1 = new Player;
 			blocks = new Array;
-			triggers = new Array;
+			triggerTrap = new TriggerFalling
 			trap = new fallingTrap;
 			spawn = new playerSpawn;
 			rock2 = new rock;
@@ -48,8 +48,7 @@ package
 			for (var i:int = 0; i < level.numChildren; i++)
 			{
 				var object:Object = level.getChildAt(i);
-				trace(level.numChildren + " children in level");
-				trace(object.name);
+				
 				if (object is Player)
 				{
 					trace("Found player at " + i);
@@ -59,40 +58,36 @@ package
 				else if (object is Block)
 				{
 					trace("Found block at " + i);
-					var block:Block = object as Block;
+					var block1:Block = object as Block;
 					
-					blocks.push(block);
+					blocks.push(block1);
 					
 				}
 				else if (object is playerSpawn)
 				{
 					trace("Found player spawn at " + i);
-
 					spawn = object as playerSpawn;
 				}
 				else if (object is Trigger)
 				{
 					trace("Found trigger at " + i);
-					var trigger:Trigger = object as Trigger;
-					
-					triggers.push(trigger);
+					triggerTrap = object as TriggerFalling;
 				}
 				else if (object is fallingTrap)
 				{
 					trace("Found trap at " + i);
-					trap = object as fallingTrap;
+					trap = object as fallingTrap;		
 					
-					//traps.push(trap);
-					trap.Floor = blocks[0];
-					
-					triggers[0].trap = trap;
 				}
 				else if (object is rock)
 				{
-					trace("Found trap at " + i);
+					trace("Found rock at " + i);
 					rock2 = object as rock;
 				}
 			}
+			
+			trap.Floor = blocks[0];
+			triggerTrap.trap = trap;
 				
 			
 			player1.spawn = spawn;
@@ -109,7 +104,7 @@ package
 			//Allows to us to see all objects colliding with the one we care about.
 			
 			//Object we are interested in
-			myCollisionList = new CollisionList(triggers[0]);
+			myCollisionList = new CollisionList(triggerTrap);
 			
 			//items we care about
 			myCollisionList.addItem(rock2);
@@ -144,7 +139,8 @@ package
 				}
 				
 				player1.Update(e);
-				
+
+				/* block collision */
 				for (var i:int = 0; i < blocks.length; i++) 
 				{
 					var block:Block = blocks[i];
@@ -164,18 +160,12 @@ package
 					else
 					{
 						player1.block = null;
-					}
-					
+					}	
 				}
 				
 				rock2.Update();
-
-				for (i = 0; i < triggers.length; i++)
-				{
-					var trigger:Trigger = triggers[i];
-					
-					trigger.Update(player1, rock2);			
-				}
+	
+				triggerTrap.Update(player1, rock2);			
 				
 				if (player1.hitTestObject(rock2))
 				{
