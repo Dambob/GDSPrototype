@@ -28,6 +28,7 @@ package
 		private var JumpCounter:int = 0;
 		private var bFalling:Boolean = false;
 		public var block:Block = null;
+		public var crate:Crate = null;
 		
 		public var spawn:playerSpawn = null;
 		public var bDead:Boolean = false;
@@ -44,6 +45,7 @@ package
 		
 	
 		private var velocity:int = 0;
+		public var bOnPlatform:Boolean = false;
 		
 		public function Player() 
 		{
@@ -66,7 +68,7 @@ package
 		private function UpdateState():void
 		{
 			
-			if (bClimb) 
+			if (bClimb && bCanClimb) 
 			{
 				State = 4;				
 			}
@@ -74,7 +76,7 @@ package
 			{
 				State = 3;
 			}			
-			else if ((bUp && !bFalling) || bJumping)
+			else if ( (bUp && bOnPlatform) || bJumping)
 			{
 				State = 2;
 			}
@@ -103,6 +105,7 @@ package
 					break;
 					
 				case 2: //jumping
+				
 					if (currentAnim != jumpAnim)
 					{
 						playAnim(jumpAnim);
@@ -148,36 +151,85 @@ package
 			 * 
 			 */
 			
-			velocity--;
-			
-			if (block == null || bJumping)
+			if (!bClimb)
+			{
+				if (block != null)
+				{
+					if (block.y - (block.height/2) >= y)
+					{
+						//Play landing anim
+						//playAnim(landingAnim);
+						
+						var j:int = block.y - height / 2 - block.height / 2 + 1;
+						
+						velocity = y - j;
+						
+						y -= velocity;
+						level.y += velocity;
+						
+						
+						velocity = 0;
+						bOnPlatform = true;
+					}
+				}
+				else if (crate != null)
+				{
+					if (crate.y - (crate.height/2) >= y)
+					{
+						
+						//Play landing anim
+						//playAnim(landingAnim);
+						
+						var j:int = crate.y - height / 2 - crate.height / 2 + 1;
+						
+						velocity = y - j;
+						
+						y -= velocity;
+						level.y += velocity;
+						
+						
+						velocity = 0;
+						bOnPlatform = true;
+						
+					}
+				}
+				else	//in air
+				{
+					bOnPlatform = false;
+					
+					if (velocity < 0)
+					{
+						bJumping = false;
+						bFalling = true;
+						
+						//play falling anim
+						//playAnim(fallAnim);
+					}
+					else if (velocity > 0)
+					{
+						bJumping = true;
+						bFalling = false;
+					}
+					else
+					{
+						bJumping = false;
+						bFalling = false;
+						
+					}
+					
+					y 	-= velocity;
+					level.y += velocity;
+					
+					velocity--;				
+					
+				}
+			}
+			else if (bClimb && bCanClimb)
 			{
 				y -= velocity;
 				level.y += velocity;
-				
-				if (velocity < 0)
-				{
-					//play falling anim
-					//playAnim(fallAnim);
-				}
 			}
-			else if (block != null)
-			{				
-				if (block.y - (block.height/2) >= y)
-				{
-					bFalling = false;
-					velocity = 0;
-					
-					//Play landing anim
-					//playAnim(landingAnim);
-					
-					y = block.y - height / 2 - block.height / 2;
-				}
-				else
-				{
-					bFalling = true;
-				}
-			}
+			
 			
 			//Reverses the animation on the X if appropriate
 			currentAnim.scaleX = animScale;
@@ -244,18 +296,10 @@ package
 		
 		private function Jump():void
 		{
-			if (!bJumping)
+			if (!bJumping && bOnPlatform)
 			{
-				bJumping = true;
 				velocity = 15;
-			}
-			
-			if (velocity <= 0)
-			{
-				bJumping = false;
-				bFalling = true;
-			}
-			
+			}			
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void

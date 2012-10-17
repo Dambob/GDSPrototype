@@ -9,10 +9,12 @@
 		
 		private var accel:int = 0;
 		private var speed:int = 0;
-		private var weight:int = 2;
+		private var weight:int = 3;
 		private var vY:int = 0;
 		
-		public var block1:Block = null;
+		public var block:Block = null;
+		public var crate:Crate = null;
+		public var bOnPlatform:Boolean = false;
 		public var velocity:int = 0;
 		
 		public function PushBlock() 
@@ -21,44 +23,81 @@
 		}
 		
 		// Function called every frame to handle  ball movement & rotation.
-		public function Update():void 
+		public function Update(p:Player):void 
 		{			
 			speed += accel;	// Change speed based on acceleration (Frame rate dependent but should be fine for this project)
-			
-			//rotation += speed / 3; // Rotate ball based on speed of ball, 3 is a magic number to make rotation believable assuming no sliding motion
-			
+	
 			x += speed / (10 + weight);	// Change position based off speed, weight may be adjusted to give slightly different feel
 			
-			accel = 1 * ( -speed / Math.abs(speed));	// Assuming no object hits ball at later point deceleration will be set due to friction.
-			
-			//Stops the ball at the edges of the screen.
-	/*		if (x > stage.stageWidth)
+			accel = weight * ( -speed / Math.abs(speed) );	// Assuming no object hits ball at later point deceleration will be set due to friction.
+
+			if ( (p.y + 60 > y) && (p.y - 30 < y))
 			{
-				speed = 0;
+				var direction:int = x - p.x;
+				
+				direction = direction / Math.abs(direction); // Calculate which side of ball player is on
+				
+				if (direction > 0)
+				{
+					//player at left
+					if ( (p.x + (p.width / 2)) > (x - width / 2) )
+					{
+						trace("Player intersecting left");
+						
+						x += (p.x + (p.width / 2)) - (x - width / 2);
+					}
+				}
+				else
+				{
+					//player at right
+					if ( (p.x - (p.width / 2)) < (x + width / 2) )
+					{
+						x -= (p.x + (p.width / 2)) - (x - width / 2);
+					}
+				}
 			}
-			else if (x < 0)
-			{
-				speed = 0;
-			}
-	*/	
 			
 			//gravity
 			//similar to player
 			
-			if (block1 == null)
+			if (block != null)
 			{
-				velocity -= 1;
-				
-				y -= velocity;
-			}
-			else if (block1 != null)
-			{				
-				if (block1.y - (block1.height/2) >= y)
+				if (block.y - (block.height/2) >= y)
 				{
-					velocity = 0;
 					
-					y = block1.y - height / 2 - block1.height / 2;
+					//Play landing anim
+					//playAnim(landingAnim);
+					
+					y = block.y - height / 2 - block.height / 2 + 1;
+					
+					velocity = 0;
 				}
+			}
+			else if (crate != null)
+			{
+				if (crate.y - (crate.height/2) >= y)
+				{
+					
+					//Play landing anim
+					//playAnim(landingAnim);
+					
+					
+					y = crate.y - height / 2 - crate.height / 2 + 1;
+					
+					
+					velocity = 0;
+					bOnPlatform = true;
+					
+				}
+			}
+			else	//in air
+			{
+				bOnPlatform = false;
+				
+				y 	-= velocity;
+				
+				velocity--;				
+				
 			}
 			
 		}
@@ -98,14 +137,9 @@
 			
 			direction = direction / Math.abs(direction); // Calculate which side of ball player is on
 			
-			if (direction > 0)
-			{
-				x = p.x + (p.width / 2) + (width/2);
-			}
-			else
-			{
-				x = p.x - (p.width / 2) - (width/2);
-			}
+			accel += (10 + p.maxVel) * direction ;
+			
+			
 			
 			p.maxVel = 2;
 		}

@@ -132,7 +132,6 @@ package
 				
 				if (player1.hitTestObject(vine))
 				{
-					trace("CAN CLIMB");
 					player1.bCanClimb = true;
 				}
 				else
@@ -155,7 +154,7 @@ package
 							
 							if (crate.y <= block.y)
 							{
-								crate.block1 = block;
+								crate.block = block;
 														
 								//Breaks out of for loop
 								j = blocks.length - 1;
@@ -164,10 +163,37 @@ package
 						}
 						else
 						{
-							crate.block1 = null;
+							crate.block = null;
 						}	
+						
 					}
-					
+						
+/*					for (var j:int = 0; j < crates.length; j++) 
+					{
+						if (j != i)
+						{
+							var crate1:Crate = crates[j];
+							
+							if (crate.hitTestObject(crate1))
+							{
+								
+								if (crate.y <= crate1.y)
+								{
+									crate.crate = crate1;
+															
+									//Breaks out of for loop
+									j = crate1.length - 1;
+									
+								}
+							}
+							else
+							{
+								crate.crate1 = null;
+							}	
+						}
+						
+					}
+*/
 					
 					if (player1.hitTestObject(crate))
 					{
@@ -197,7 +223,7 @@ package
 					}
 					
 					
-					crate.Update();
+					crate.Update(player1);
 				}
 
 			}		
@@ -210,6 +236,7 @@ package
 			/* block collision */
 				
 			player1.block = null;
+			player1.crate = null;
 				
 			for (var i:int = 0; i < blocks.length; i++) 
 			{
@@ -221,10 +248,7 @@ package
 					if (player1.y <= block.y)
 					{
 						player1.block = block;
-												
-						//Breaks out of for loop
-						//i = blocks.length - 1;
-						trace("On static block");
+					
 						
 						return;
 						
@@ -239,18 +263,11 @@ package
 				
 				if (player1.hitTestObject(crate))
 				{
-					if (player1.y + player1.height/2 < crate.y - crate.height/2 + 10)
-					{
-						player1.block = crate as Block;
-												
-						//Breaks out of for loop
-						i = crates.length - 1;
+
+					player1.crate = crate;
+					
+					return;
 						
-						trace("on crate");
-						
-						return;
-						
-					}
 				}
 			}
 
