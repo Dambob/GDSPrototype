@@ -68,6 +68,12 @@ package
 		private function UpdateState():void
 		{
 			
+			if (State == 4)
+			{
+				trace("climbing!");
+			}
+			
+			
 			if (bClimb && bCanClimb) 
 			{
 				State = 4;				
@@ -96,11 +102,18 @@ package
 			switch(State)
 			{
 				case 0: ///idle
-					playAnim(idleAnim);
+					if (currentAnim != idleAnim)
+					{
+						playAnim(idleAnim);
+					}
 					break;
 					
 				case 1: ///moving
-					playAnim(runAnim);
+					if (currentAnim != runAnim)
+					{
+						playAnim(runAnim);
+					}
+					
 					Moving();
 					break;
 					
@@ -124,7 +137,11 @@ package
 					Respawn();
 					break;
 				case 4: //climbing
-					playAnim(climbAnim);
+					
+					if (currentAnim != climbAnim)
+					{
+						playAnim(climbAnim);
+					}
 					
 					if (bCanClimb)
 					{
@@ -151,7 +168,7 @@ package
 			 * 
 			 */
 			
-			if (!bClimb)
+			if (State != 4)
 			{
 				if (block != null)
 				{
@@ -224,7 +241,7 @@ package
 					
 				}
 			}
-			else if (bClimb && bCanClimb)
+			else if (State == 4)
 			{
 				y -= velocity;
 				level.y += velocity;
