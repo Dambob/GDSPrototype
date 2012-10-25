@@ -24,15 +24,6 @@ package
 			x += speed / (10 + weight);	// Change position based off speed, weight may be adjusted to give slightly different feel
 			accel = 1 * ( -speed / Math.abs(speed));	// Assuming no object hits ball at later point deceleration will be set due to friction.
 			
-			//Stops the ball at the edges of the screen.
-			if (x > stage.stageWidth)
-			{
-				speed = 0;
-			}
-			else if (x < 0)
-			{
-				speed = 0;
-			}
 		}
 		
 		// Function called on player impact with ball

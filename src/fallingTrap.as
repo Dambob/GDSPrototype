@@ -10,7 +10,7 @@ package
 		public var bFalling:Boolean = false;
 		public var Floor:Block = null;
 		private var speed:int = 0;
-		private var accel:int = 1;
+		private var accel:int = 2;
 
 		public function fallingTrap() 
 		{
