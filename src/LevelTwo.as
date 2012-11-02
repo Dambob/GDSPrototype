@@ -29,7 +29,7 @@ package
 			
 		}
 		
-		public function init(stageRef:Stage)
+		public function init(stageRef:Stage):void
 		{
 			
 			level = new Level2;

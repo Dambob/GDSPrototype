@@ -154,6 +154,8 @@ package
 						
 						if (player1.y <= block.y)
 						{
+							
+							block.bStoodOn = true;
 							player1.block = block;
 													
 							//Breaks out of for loop

@@ -20,6 +20,11 @@ package
 		public var levelDebug:LevelDebug = null;
 		public var level1:LevelOne = null;
 		public var level2:LevelTwo = null;
+		public var level3:LevelThree = null;
+		public var level4:LevelFour = null;
+		public var level5:LevelFive = null;
+		public var level6:LevelSix = null;
+		public var level7:LevelSeven = null;
 		public var bLoading:Boolean = false;
 		
 		public var bQuit:Boolean = false;
@@ -134,6 +139,125 @@ package
 						level2.init(stage);
 					}
 					
+					break;
+					
+				case 3:
+					
+					if (level3 != null)
+					{
+						level3.Update(e);
+						
+						if (bQuit)
+						{
+							level3.Delete();
+							level3 = null;
+							currentLevel = 0;
+							
+							bQuit = false;
+						}
+					}
+					else
+					{
+						level3 = new LevelThree;
+						level3.init(stage);
+					}
+					
+					break;
+					
+				case 4:
+					
+					if (level4 != null)
+					{
+						level4.Update(e);
+						
+						if (bQuit)
+						{
+							level4.Delete();
+							level4 = null;
+							currentLevel = 0;
+							
+							bQuit = false;
+						}
+					}
+					else
+					{
+						level4 = new LevelFour;
+						level4.init(stage);
+					}
+					
+					break;
+				
+				case 5:
+					
+					if (level5 != null)
+					{
+						level5.Update(e);
+						
+						if (bQuit)
+						{
+							level5.Delete();
+							level5 = null;
+							currentLevel = 0;
+							
+							bQuit = false;
+						}
+					}
+					else
+					{
+						level5 = new LevelFive;
+						level5.init(stage);
+					}
+					
+					break;
+					
+				case 6:
+					
+					if (level6 != null)
+					{
+						level6.Update(e);
+						
+						if (bQuit)
+						{
+							level6.Delete();
+							level6 = null;
+							currentLevel = 0;
+							
+							bQuit = false;
+						}
+					}
+					else
+					{
+						level6 = new LevelSix;
+						level6.init(stage);
+					}
+					
+					break;
+					
+				case 7:
+					
+					if (level7 != null)
+					{
+						level7.Update(e);
+						
+						if (bQuit)
+						{
+							level7.Delete();
+							level7 = null;
+							currentLevel = 0;
+							
+							bQuit = false;
+						}
+					}
+					else
+					{
+						level7 = new LevelSeven;
+						level7.init(stage);
+					}
+					
+					break;
+					
+				default:
+					currentLevel = 0;
 					break;
 			}
 			
