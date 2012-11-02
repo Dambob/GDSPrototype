@@ -5,6 +5,8 @@ package
 	import flash.events.Event;
 	import flash.display.StageScaleMode; 
 	import flash.events.KeyboardEvent;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	/**
 	 * ...
@@ -26,6 +28,9 @@ package
 		public var level6:LevelSix = null;
 		public var level7:LevelSeven = null;
 		public var bLoading:Boolean = false;
+		public var versionNumber:TextField = null;
+		public var textFormat:TextFormat = null;
+		public var version:String = "V 0.1";
 		
 		public var bQuit:Boolean = false;
 		
@@ -63,9 +68,7 @@ package
 				case 0: //menu for selecting level
 						//will be for testing only
 					if (levelDebug != null)
-					{
-						
-						
+					{	
 						for (var i:int = 0; i < levelDebug.buttons.length; i++)
 						{
 							if (levelDebug.buttons[i].bLoad)
@@ -82,6 +85,7 @@ package
 							levelDebug.Delete();
 							
 							levelDebug = null;
+							versionNumber = null;
 							
 							bLoading = false;
 						}
@@ -92,8 +96,20 @@ package
 						trace("Init debug");
 						levelDebug = new LevelDebug;
 						levelDebug.init(stage);
+						
+						//Adds a basic version number
+						textFormat = new TextFormat;
+						textFormat.font = "Arial";
+						textFormat.size = 24;
+						versionNumber = new TextField;
+						versionNumber.defaultTextFormat = textFormat;
+						versionNumber.x = 50;
+						versionNumber.y = 550;
+						versionNumber.text = version;
+						stage.addChild(versionNumber);
 					}
 					break;
+					
 				case 1:
 					
 					if (level1 != null)

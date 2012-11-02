@@ -42,6 +42,7 @@ package
 		private var animScale:int = 1;
 		
 		public var bCanClimb:Boolean = false;
+		public var bClimbDown:Boolean = false;
 		
 	
 		private var velocity:int = 0;
@@ -66,17 +67,14 @@ package
 		
 		
 		private function UpdateState():void
-		{
-			
-			if (State == 4)
-			{
-				trace("climbing!");
-			}
-			
-			
-			if (bClimb && bCanClimb) 
+		{			
+			if (bClimb && bCanClimb && !bClimbDown)  
 			{
 				State = 4;				
+			}
+			else if (bClimbDown && bCanClimb && !bClimb) 
+			{
+				State = 5;				
 			}
 			else if (bDead)
 			{
@@ -98,6 +96,8 @@ package
 			{
 				State = 0;
 			}
+			
+			trace(State);
 			
 			switch(State)
 			{
@@ -143,6 +143,7 @@ package
 						playAnim(climbAnim);
 					}
 					
+					trace("state 4!");
 					if (bCanClimb)
 					{
 						velocity = 5;
@@ -153,6 +154,26 @@ package
 						velocity = 0;
 						bJumping = true;
 						bClimb = false;
+					}
+					
+					break;
+				case 5: //climbing down
+					
+					if (currentAnim != climbAnim)
+					{
+						playAnim(climbAnim);
+					}
+					
+					if (bCanClimb)
+					{
+						velocity = -5;
+						bJumping = true;
+					}
+					else
+					{
+						velocity = 0;
+						bJumping = true;
+						bClimbDown = false;
 					}
 					
 					break;
@@ -168,7 +189,7 @@ package
 			 * 
 			 */
 			
-			if (State != 4)
+			if (State != 4 && State != 5)
 			{
 				if (block != null)
 				{
@@ -241,7 +262,7 @@ package
 					
 				}
 			}
-			else if (State == 4)
+			else if (State == 4 || State == 5)
 			{
 				y -= velocity;
 				level.y += velocity;
@@ -345,6 +366,10 @@ package
 			{
 				bDead = true;
 			}
+			else if (event.keyCode == 83)
+			{
+				bClimbDown = true;
+			}
 		}
 		
 		private function onKeyUp(event:KeyboardEvent):void
@@ -367,7 +392,11 @@ package
 			}
 			else if (event.keyCode == 69)
 			{
-				bToggle = true;
+				bToggle = false;
+			}
+			else if (event.keyCode == 83)
+			{
+				bClimbDown = false;
 			}
 		}
 		
