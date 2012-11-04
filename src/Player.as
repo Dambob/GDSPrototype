@@ -1,5 +1,4 @@
 package  
-
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -11,6 +10,10 @@ package
 	 */
 	public class Player extends myObject 
 	{
+		
+		////////////////////Stick a move x move y function in here!!!!!!!!
+		
+		
 		
 		public var main:Main = null;
 		
@@ -97,8 +100,6 @@ package
 				State = 0;
 			}
 			
-			trace(State);
-			
 			switch(State)
 			{
 				case 0: ///idle
@@ -143,7 +144,6 @@ package
 						playAnim(climbAnim);
 					}
 					
-					trace("state 4!");
 					if (bCanClimb)
 					{
 						velocity = 5;
@@ -266,6 +266,15 @@ package
 			{
 				y -= velocity;
 				level.y += velocity;
+			}
+			
+			if (velocity > 15)
+			{
+				velocity = 15;
+			}
+			else if (velocity < -10)
+			{
+				velocity = -10;
 			}
 			
 			

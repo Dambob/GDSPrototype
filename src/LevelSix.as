@@ -17,6 +17,7 @@ package
 		private var blocks:Array = null;
 		private var spawn:playerSpawn = null;
 		private var killboxes:Array = null;
+		private var vines:Array = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -35,6 +36,7 @@ package
 			blocks = new Array;
 			spawn = new playerSpawn;
 			killboxes = new Array;
+			vines = new Array;
 				
 			stageLink = stageRef;
 			
@@ -70,6 +72,14 @@ package
 					var killbox:KillBox = object as KillBox
 					
 					killboxes.push(killbox);
+				}
+				else if (object is climbingVine)
+				{
+					trace("Found vine at " + i);
+
+					var vine:climbingVine = object as climbingVine
+					
+					vines.push(vine);
 				}
 				
 			}	
@@ -112,12 +122,29 @@ package
 					}	
 				}
 				
+				for (var i:int = 0; i < vines.length; i++) 
+				{
+					var vine:climbingVine = vines[i];
+					
+					if (player1.hitTestObject(vine))
+					{
+						player1.bCanClimb = true;
+						i = vines.length;
+					}
+					else
+					{
+						player1.bCanClimb = false;
+					}
+				}
+				
 			}		
 			
 		}
 		
 		private function playerBlockCollision():void
 		{
+			
+//			playerHorizBlockCollision();
 			
 			/* block collision */
 				
@@ -129,16 +156,13 @@ package
 				var block:Block = blocks[i];
 				
 				if (player1.hitTestObject(block))
-				{
-					
-					if (player1.y <= block.y)
+				{										
+					if (player1.y + 53 - 10 <= block.y - block.height/2)
 					{
 						player1.block = block;
-					
 						
 						return;
-						
-					}
+					}	
 				}	
 			}
 		}

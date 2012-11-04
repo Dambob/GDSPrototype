@@ -72,7 +72,7 @@ package
 					killboxes.push(killbox);
 				}
 				
-			}	
+			}
 			
 			player1.spawn = spawn;
 			
@@ -119,6 +119,8 @@ package
 		private function playerBlockCollision():void
 		{
 			
+//			playerHorizBlockCollision();
+			
 			/* block collision */
 				
 			player1.block = null;
@@ -129,17 +131,41 @@ package
 				var block:Block = blocks[i];
 				
 				if (player1.hitTestObject(block))
-				{
-					
-					if (player1.y <= block.y)
+				{										
+					if (player1.y + 53 - 10 <= block.y - block.height/2)
 					{
 						player1.block = block;
-					
 						
 						return;
-						
-					}
+					}	
 				}	
+			}
+		}
+		
+		private function playerHorizBlockCollision():void
+		{
+			for (var i:int = 0; i < blocks.length; i++) 
+			{
+				var block:Block = blocks[i];
+				
+				if (player1.hitTestObject(block))
+				{	
+					trace(player1.y + 53 - 10);
+					trace(block.y - block.height/2);
+					
+					//Not on top of block
+					if (player1.y + 53 - 10 > block.y - block.height/2)
+					{
+						//block left edge further left than player right edge
+						if (block.x - (block.width/2) + 1 <= player1.x + (player1.width/2) )
+						{
+							trace ("player cutting into block!!!!!!!!!!!!!!1");
+							
+							//player1.x = block.x - (block.width / 2) + (player1.width / 2);
+						}
+					}
+					
+				}
 			}
 		}
 		

@@ -136,6 +136,8 @@ package
 		private function playerBlockCollision():void
 		{
 			
+//			playerHorizBlockCollision();
+			
 			/* block collision */
 				
 			player1.block = null;
@@ -146,16 +148,13 @@ package
 				var block:Block = blocks[i];
 				
 				if (player1.hitTestObject(block))
-				{
-					
-					if (player1.y <= block.y)
+				{										
+					if (player1.y + 53 - 10 <= block.y - block.height/2)
 					{
 						player1.block = block;
-					
 						
 						return;
-						
-					}
+					}	
 				}	
 			}
 		}

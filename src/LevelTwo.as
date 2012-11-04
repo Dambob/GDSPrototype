@@ -233,6 +233,8 @@ package
 		private function playerBlockCollision():void
 		{
 			
+//			playerHorizBlockCollision();
+			
 			/* block collision */
 				
 			player1.block = null;
@@ -243,19 +245,16 @@ package
 				var block:Block = blocks[i];
 				
 				if (player1.hitTestObject(block))
-				{
-					
-					if (player1.y <= block.y)
+				{										
+					if (player1.y + 53 - 10 <= block.y - block.height/2)
 					{
 						player1.block = block;
-					
 						
 						return;
-						
-					}
+					}	
 				}	
 			}
-						
+			
 			//if player isn't on a static block, check to see if he's on a moveable one
 			for (var i:int = 0; i < crates.length; i++)
 			{
@@ -264,15 +263,17 @@ package
 				if (player1.hitTestObject(crate))
 				{
 
-					player1.crate = crate;
-					
-					return;
+					if (player1.y + 53 - 10 <= crate.y - crate.height/2)
+					{
+						player1.crate = crate;
+						
+						return;
+					}	
 						
 				}
 			}
-
 		}
-		
+				
 		public function Delete():void
 		{
 			stageLink.removeChild(level)
