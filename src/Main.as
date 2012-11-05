@@ -30,7 +30,7 @@ package
 		public var bLoading:Boolean = false;
 		public var versionNumber:TextField = null;
 		public var textFormat:TextFormat = null;
-		public var version:String = "V 0.2";
+		public var version:String = "V 0.2.2";
 		
 		public var bQuit:Boolean = false;
 		
@@ -85,7 +85,7 @@ package
 							levelDebug.Delete();
 							
 							levelDebug = null;
-							versionNumber = null;
+							stage.removeChild(versionNumber);
 							
 							bLoading = false;
 						}

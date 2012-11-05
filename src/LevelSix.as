@@ -18,6 +18,7 @@ package
 		private var spawn:playerSpawn = null;
 		private var killboxes:Array = null;
 		private var vines:Array = null;
+		private var crates:Array = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -37,6 +38,7 @@ package
 			spawn = new playerSpawn;
 			killboxes = new Array;
 			vines = new Array;
+			crates = new Array;
 				
 			stageLink = stageRef;
 			
@@ -80,6 +82,14 @@ package
 					var vine:climbingVine = object as climbingVine
 					
 					vines.push(vine);
+				}
+				else if (object is Crate)
+				{
+					trace("Found crate at " + i);
+
+					var crate:Crate = object as Crate
+					
+					crates.push(crate);
 				}
 				
 			}	
@@ -144,7 +154,7 @@ package
 		private function playerBlockCollision():void
 		{
 			
-//			playerHorizBlockCollision();
+			playerHorizBlockCollision();
 			
 			/* block collision */
 				
@@ -157,13 +167,78 @@ package
 				
 				if (player1.hitTestObject(block))
 				{										
-					if (player1.y + 53 - 10 <= block.y - block.height/2)
+					if (player1.y + 53 - 30 <= block.y - block.height/2)
 					{
 						player1.block = block;
 						
 						return;
 					}	
 				}	
+			}
+			
+			//if player isn't on a static block, check to see if he's on a moveable one
+			for (var i:int = 0; i < crates.length; i++)
+			{
+				var crate:Crate = crates[i];
+				
+				if (player1.hitTestObject(crate))
+				{
+
+					if (player1.y + 53 - 30 <= crate.y - crate.height/2)
+					{
+						player1.crate = crate;
+						
+						return;
+					}	
+						
+				}
+			}
+			
+		}
+		
+		private function playerHorizBlockCollision():void
+		{
+			for (var i:int = 0; i < blocks.length; i++) 
+			{
+				var block:Block = blocks[i];
+				
+				if (player1.hitTestObject(block))
+				{						
+					//Not on top of block
+					if (player1.y + 53 - 30 > block.y - block.height/2)
+					{
+						trace("not on block");
+						
+						//block left edge further left than player right edge
+						if (block.x - (block.width/2) + 1 <= player1.x + (player1.width/2) && (player1.x + (player1.width/2) < block.x))
+						{	
+							trace("cutting left");
+							var j:int = player1.x + (player1.width / 2) - (block.x - (block.width / 2));
+							
+							trace(j);
+							
+							player1.x -= j;
+							level.x += j;
+
+						}
+						else if (block.x + (block.width/2) - 1 >= player1.x - (player1.width/2) && (player1.x - (player1.width/2) > block.x))
+						{
+							trace("cutting right");
+							
+							var z:int = (block.x + (block.width / 2)) - (player1.x - (player1.width / 2));
+							
+							trace((block.x + (block.width / 2)));
+							trace((player1.x - (player1.width / 2)));
+							
+							trace(z);
+							
+							player1.x += z;
+							level.x -= z;
+
+						}
+					}
+					
+				}
 			}
 		}
 		

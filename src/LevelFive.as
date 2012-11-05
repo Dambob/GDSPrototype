@@ -119,7 +119,7 @@ package
 		private function playerBlockCollision():void
 		{
 			
-//			playerHorizBlockCollision();
+			playerHorizBlockCollision();
 			
 			/* block collision */
 				
@@ -132,7 +132,7 @@ package
 				
 				if (player1.hitTestObject(block))
 				{										
-					if (player1.y + 53 - 10 <= block.y - block.height/2)
+					if (player1.y + 53 - 30 <= block.y - block.height/2)
 					{
 						player1.block = block;
 						
@@ -149,19 +149,38 @@ package
 				var block:Block = blocks[i];
 				
 				if (player1.hitTestObject(block))
-				{	
-					trace(player1.y + 53 - 10);
-					trace(block.y - block.height/2);
-					
+				{						
 					//Not on top of block
-					if (player1.y + 53 - 10 > block.y - block.height/2)
+					if (player1.y + 53 - 30 > block.y - block.height/2)
 					{
+						trace("not on block");
+						
 						//block left edge further left than player right edge
-						if (block.x - (block.width/2) + 1 <= player1.x + (player1.width/2) )
-						{
-							trace ("player cutting into block!!!!!!!!!!!!!!1");
+						if (block.x - (block.width/2) + 1 <= player1.x + (player1.width/2) && (player1.x + (player1.width/2) < block.x))
+						{	
+							trace("cutting left");
+							var j:int = player1.x + (player1.width / 2) - (block.x - (block.width / 2));
 							
-							//player1.x = block.x - (block.width / 2) + (player1.width / 2);
+							trace(j);
+							
+							player1.x -= j;
+							level.x += j;
+
+						}
+						else if (block.x + (block.width/2) - 1 >= player1.x - (player1.width/2) && (player1.x - (player1.width/2) > block.x))
+						{
+							trace("cutting right");
+							
+							var z:int = (block.x + (block.width / 2)) - (player1.x - (player1.width / 2));
+							
+							trace((block.x + (block.width / 2)));
+							trace((player1.x - (player1.width / 2)));
+							
+							trace(z);
+							
+							player1.x += z;
+							level.x -= z;
+
 						}
 					}
 					

@@ -272,9 +272,9 @@ package
 			{
 				velocity = 15;
 			}
-			else if (velocity < -10)
+			else if (velocity < -15)
 			{
-				velocity = -10;
+				velocity = -15;
 			}
 			
 			
