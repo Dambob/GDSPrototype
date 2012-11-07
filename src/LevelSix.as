@@ -147,14 +147,138 @@ package
 					}
 				}
 				
+				for (var i:int = 0; i < crates.length; i++)
+				{
+					//crate colliding with platforms
+					
+					var crate:Crate = crates[i];
+										
+					for (var j:int = 0; j < blocks.length; j++) 
+					{
+						var block:Block = blocks[j];
+						
+						if (crate.hitTestObject(block))
+						{
+							
+							if (crate.y <= block.y)
+							{
+								crate.block = block;
+														
+								//Breaks out of for loop
+								j = blocks.length - 1;
+								
+							}
+						}
+						else
+						{
+							crate.block = null;
+						}	
+						
+					}
+						
+/*					for (var j:int = 0; j < crates.length; j++) 
+					{
+						if (j != i)
+						{
+							var crate1:Crate = crates[j];
+							
+							if (crate.hitTestObject(crate1))
+							{
+								
+								if (crate.y <= crate1.y)
+								{
+									crate.crate = crate1;
+															
+									//Breaks out of for loop
+									j = crate1.length - 1;
+									
+								}
+							}
+							else
+							{
+								crate.crate1 = null;
+							}	
+						}
+						
+					}
+*/
+					
+					if (player1.hitTestObject(crate))
+					{
+						
+						var playerFeet:int = player1.y + (player1.height / 2);
+						var playerHead:int = player1.y - (player1.height / 2);
+						
+						var crateTop:int = crate.y - (crate.height / 2);
+						var crateBottom:int = crate.y + (crate.height / 2);
+						
+						if ( (playerHead < crateTop) && (playerFeet > crateBottom) )
+						{
+							trace("pushing");
+							crate.roll(player1);
+						}
+	/*					else if (playerFeet < crateBottom)
+						{
+							trace("above");
+							if ( player1.block == null )
+							{
+								trace("Player on block!");
+								player1.block = crate as Block;
+							}
+						}
+						
+	*/				
+					}
+					
+					crate.Update(player1);
+					
+					crateBlockCollision(crate);
+				}
+				
 			}		
 			
+		}
+		
+		private function crateBlockCollision(c:Crate):void
+		{
+			for (var i:int = 0; i < blocks.length; i++) 
+			{
+				var block:Block = blocks[i];
+				
+				if (c.hitTestObject(block))
+				{						
+					//Not on top of block
+					if (c.y + (c.height/2) > block.y - block.height/2)
+					{
+						trace("not on block");
+						
+						//block left edge further left than player right edge
+						if (block.x - (block.width/2) + 1 <= c.x + (c.width/2) && (c.x + (c.width/2) < block.x))
+						{	
+							var j:int = c.x + (c.width / 2) - (block.x - (block.width / 2));
+							
+							c.speed *= -1;
+
+						}
+						else if (block.x + (block.width/2) - 1 >= c.x - (c.width/2) && (c.x - (c.width/2) > block.x))
+						{
+							var z:int = (block.x + (block.width / 2)) - (c.x - (c.width / 2));
+						
+							c.speed *= -1;
+						}
+					}
+					
+				}
+			}
 		}
 		
 		private function playerBlockCollision():void
 		{
 			
-			playerHorizBlockCollision();
+			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			{
+				playerHorizBlockCollision();
+			}
 			
 			/* block collision */
 				

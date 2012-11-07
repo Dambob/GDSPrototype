@@ -102,7 +102,10 @@ package
 		private function playerBlockCollision():void
 		{
 			
-			playerHorizBlockCollision();
+			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			{
+				playerHorizBlockCollision();
+			}
 			
 			/* block collision */
 				

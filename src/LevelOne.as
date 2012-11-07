@@ -144,32 +144,11 @@ package
 				
 				player1.Update(e);
 
-				/* block collision */
-				for (var i:int = 0; i < blocks.length; i++) 
-				{
-					var block:Block = blocks[i];
-					
-					if (player1.hitTestObject(block))
-					{
-						
-						if (player1.y <= block.y)
-						{
-							
-							block.bStoodOn = true;
-							player1.block = block;
-													
-							//Breaks out of for loop
-							i = blocks.length - 1;
-							
-						}
-					}
-					else
-					{
-						player1.block = null;
-					}	
-				}
+				playerBlockCollision();
 				
 				rock2.Update();
+				
+				rockBlockCollision();
 	
 				triggerTrap.Update(player1, rock2);			
 				
@@ -180,6 +159,114 @@ package
 				}
 				
 			}		
+		}
+		
+		private function rockBlockCollision():void
+		{
+			for (var i:int = 0; i < blocks.length; i++) 
+			{
+				var block:Block = blocks[i];
+				
+				if (rock2.hitTestObject(block))
+				{						
+					//Not on top of block
+					if (rock2.y + (rock2.height/2) > block.y - block.height/2)
+					{
+						trace("not on block");
+						
+						//block left edge further left than player right edge
+						if (block.x - (block.width/2) + 1 <= rock2.x + (rock2.width/2) && (rock2.x + (rock2.width/2) < block.x))
+						{	
+							var j:int = rock2.x + (rock2.width / 2) - (block.x - (block.width / 2));
+							
+							rock2.speed *= -1;
+
+						}
+						else if (block.x + (block.width/2) - 1 >= rock2.x - (rock2.width/2) && (rock2.x - (rock2.width/2) > block.x))
+						{
+							var z:int = (block.x + (block.width / 2)) - (rock2.x - (rock2.width / 2));
+						
+							rock2.speed *= -1;
+						}
+					}
+					
+				}
+			}
+		}
+		
+		private function playerBlockCollision():void
+		{
+			
+			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			{
+				playerHorizBlockCollision();
+			}
+			
+			/* block collision */
+				
+			player1.block = null;
+			player1.crate = null;
+				
+			for (var i:int = 0; i < blocks.length; i++) 
+			{
+				var block:Block = blocks[i];
+				
+				if (player1.hitTestObject(block))
+				{										
+					if (player1.y + 53 - 30 <= block.y - block.height/2)
+					{
+						player1.block = block;
+						
+						return;
+					}	
+				}	
+			}
+		}
+		
+		private function playerHorizBlockCollision():void
+		{
+			for (var i:int = 0; i < blocks.length; i++) 
+			{
+				var block:Block = blocks[i];
+				
+				if (player1.hitTestObject(block))
+				{						
+					//Not on top of block
+					if (player1.y + 53 - 30 > block.y - block.height/2)
+					{
+						trace("not on block");
+						
+						//block left edge further left than player right edge
+						if (block.x - (block.width/2) + 1 <= player1.x + (player1.width/2) && (player1.x + (player1.width/2) < block.x))
+						{	
+							trace("cutting left");
+							var j:int = player1.x + (player1.width / 2) - (block.x - (block.width / 2));
+							
+							trace(j);
+							
+							player1.x -= j;
+							level.x += j;
+
+						}
+						else if (block.x + (block.width/2) - 1 >= player1.x - (player1.width/2) && (player1.x - (player1.width/2) > block.x))
+						{
+							trace("cutting right");
+							
+							var z:int = (block.x + (block.width / 2)) - (player1.x - (player1.width / 2));
+							
+							trace((block.x + (block.width / 2)));
+							trace((player1.x - (player1.width / 2)));
+							
+							trace(z);
+							
+							player1.x += z;
+							level.x -= z;
+
+						}
+					}
+					
+				}
+			}
 		}
 		
 		public function Delete():void

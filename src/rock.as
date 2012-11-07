@@ -9,7 +9,7 @@ package
 	{
 		
 		private var accel:int = 0;
-		private var speed:int = 0;
+		public var speed:int = 0;
 		private var weight:int = 2;
 		public function rock() 
 		{

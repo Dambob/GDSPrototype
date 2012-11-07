@@ -17,19 +17,19 @@ package
 		
 		public var main:Main = null;
 		
-		private var State:int = 0;
+		public var State:int = 0;
 		
 		public var level:baseFlashLevel = null;
 		
 		private var bUp:Boolean = false;
-		private var bLeft:Boolean = false;
-		private var bRight:Boolean = false;
-		private var bClimb:Boolean = false;
+		public var bLeft:Boolean = false;
+		public var bRight:Boolean = false;
+		public var bClimb:Boolean = false;
 		private var bToggle:Boolean = false;
 		public var maxVel:int = 5;
 		public var bJumping:Boolean = false;
 		private var JumpCounter:int = 0;
-		private var bFalling:Boolean = false;
+		public var bFalling:Boolean = false;
 		public var block:Block = null;
 		public var crate:Crate = null;
 		
