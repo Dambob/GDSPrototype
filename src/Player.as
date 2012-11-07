@@ -41,7 +41,7 @@ package
 		private var runAnim:MovieClip = new RunAnim();
 		private var jumpAnim:MovieClip = new JumpAnim();
 		private var deathAnim:MovieClip = new IdleAnim();
-		private var climbAnim:MovieClip = new IdleAnim();
+		private var climbAnim:MovieClip = new ClimbAnim();
 		private var animScale:int = 1;
 		
 		public var bCanClimb:Boolean = false;

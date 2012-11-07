@@ -21,9 +21,9 @@ package
 				Counter++;
 			}
 			
-			if (Counter >= 10)
+			if (Counter >= 60)
 			{
-				x = -1000;
+				x -= 1000;
 				Counter = 0;
 				bStoodOn = false;
 			}

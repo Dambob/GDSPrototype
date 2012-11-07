@@ -30,7 +30,7 @@ package
 		public var bLoading:Boolean = false;
 		public var versionNumber:TextField = null;
 		public var textFormat:TextFormat = null;
-		public var version:String = "V 0.2.4";
+		public var version:String = "V 0.3";
 		
 		public var bQuit:Boolean = false;
 		

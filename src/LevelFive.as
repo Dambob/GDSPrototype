@@ -67,6 +67,7 @@ package
 				}
 				else if (object is KillBox)
 				{
+					trace("Found killbox at " + i);
 					var killbox:KillBox = object as KillBox
 					
 					killboxes.push(killbox);

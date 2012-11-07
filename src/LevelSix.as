@@ -19,6 +19,7 @@ package
 		private var killboxes:Array = null;
 		private var vines:Array = null;
 		private var crates:Array = null;
+		private var fallingBoxes:Array = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -39,6 +40,7 @@ package
 			killboxes = new Array;
 			vines = new Array;
 			crates = new Array;
+			fallingBoxes = new Array;
 				
 			stageLink = stageRef;
 			
@@ -49,7 +51,6 @@ package
 			{
 				var object:Object = level.getChildAt(i);
 				
-			
 				if (object is Player)
 				{
 					trace("Found player at " + i);
@@ -92,6 +93,16 @@ package
 					crates.push(crate);
 				}
 				
+				if (object is movingBlock)
+				{
+					
+					trace("Found falling block at " + i);
+					
+					var fallingBox:movingBlock = object as movingBlock
+					
+					fallingBoxes.push(fallingBox);
+				}
+								
 			}	
 			
 			player1.spawn = spawn;
@@ -132,6 +143,7 @@ package
 					}	
 				}
 				
+				//Algorithm for multiple vines
 				for (var i:int = 0; i < vines.length; i++) 
 				{
 					var vine:climbingVine = vines[i];
@@ -145,6 +157,22 @@ package
 					{
 						player1.bCanClimb = false;
 					}
+				}
+				
+				//Algorithm for falling platforms
+				for (var i:int = 0; i < fallingBoxes.length; i++) 
+				{
+					var fallingBox:movingBlock = fallingBoxes[i];
+					fallingBoxes.splice(i,1);
+					
+					if (player1.hitTestObject(fallingBox))
+					{
+						fallingBox.bStoodOn = true;
+					}	
+					
+					fallingBox.Update();
+					
+					fallingBoxes.splice(i,0, fallingBox);
 				}
 				
 				for (var i:int = 0; i < crates.length; i++)

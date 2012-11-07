@@ -17,6 +17,7 @@ package
 		private var spawn:playerSpawn = null;
 		private var vine:climbingVine = null;
 		private var killboxes:Array = null;
+		private var fallingBoxes:Array = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -36,6 +37,7 @@ package
 			spawn = new playerSpawn;
 			killboxes = new Array;			
 			vine = new climbingVine;
+			fallingBoxes = new Array;
 				
 			stageLink = stageRef;
 			
@@ -74,9 +76,20 @@ package
 				}
 				else if (object is KillBox)
 				{
+					trace("Found killbox at " + i);
 					var killbox:KillBox = object as KillBox
 					
 					killboxes.push(killbox);
+				}
+				
+				if (object is movingBlock)
+				{
+					
+					trace("Found falling block at " + i);
+					
+					var fallingBox:movingBlock = object as movingBlock
+					
+					fallingBoxes.push(fallingBox);
 				}
 				
 			}	
@@ -90,7 +103,7 @@ package
 		
 		public function Update(e:Event):void
 		{
-			
+			//
 			if (player1 != null)
 			{	
 				//Immediately resets the level on death
@@ -107,6 +120,7 @@ package
 				
 				player1.Update(e);
 				
+				//Algorithm for climbable objects
 				if (player1.hitTestObject(vine))
 				{
 					player1.bCanClimb = true;
@@ -116,6 +130,7 @@ package
 					player1.bCanClimb = false;
 				}
 				
+				//Algorithm for killboxes
 				for (var i:int = 0; i < killboxes.length; i++) 
 				{
 					var killbox:KillBox = killboxes[i];
@@ -124,6 +139,23 @@ package
 					{
 						killbox.Activate(player1);
 					}	
+				}
+				
+				
+				//Algorithm for falling platforms
+				for (var i:int = 0; i < fallingBoxes.length; i++) 
+				{
+					var fallingBox:movingBlock = fallingBoxes[i];
+					fallingBoxes.splice(i,1);
+					
+					if (player1.hitTestObject(fallingBox))
+					{
+						fallingBox.bStoodOn = true;
+					}	
+					
+					fallingBox.Update();
+					
+					fallingBoxes.splice(i,0, fallingBox);
 				}
 
 				
