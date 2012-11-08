@@ -126,155 +126,157 @@ package
 			{	
 				//Immediately resets the level on death
 				//Perhaps use a counter or button press to allow death animations etc. to continue
-				if (player1.bDead) 
+				if (player1.State == 3) 
 				{					
-					stageLink.removeChild(level);
-					
-					//Resets the level variable
-					level = new Level6;	
-					
-					init(stageLink);
-				}
-				
-				player1.Update(e);
-				
-				playerBlockCollision();
-				
-				for (var i:int = 0; i < killboxes.length; i++) 
-				{
-					var killbox:KillBox = killboxes[i];
-					
-					if (player1.hitTestObject(killbox))
+					if (player1.currentAnim.currentFrame == player1.currentAnim.totalFrames - 1)
 					{
-						killbox.Activate(player1);
-					}	
-				}
-				
-				//Algorithm for multiple vines
-				for (var i:int = 0; i < vines.length; i++) 
-				{
-					var vine:climbingVine = vines[i];
-					
-					if (player1.hitTestObject(vine))
-					{
-						player1.bCanClimb = true;
-						i = vines.length;
+						Restart();
 					}
-					else
-					{
-						player1.bCanClimb = false;
-					}
+					
 				}
-				
-				//Algorithm for falling platforms
-				for (var i:int = 0; i < fallingBoxes.length; i++) 
+				else
 				{
-					var fallingBox:movingBlock = fallingBoxes[i];
-					fallingBoxes.splice(i,1);
-					
-					if (player1.hitTestObject(fallingBox))
-					{
-						fallingBox.bStoodOn = true;
-					}	
-					
-					fallingBox.Update();
-					
-					fallingBoxes.splice(i,0, fallingBox);
-				}
 				
-				for (var i:int = 0; i < crates.length; i++)
-				{
-					//crate colliding with platforms
+					player1.Update(e);
 					
-					var crate:Crate = crates[i];
-										
-					for (var j:int = 0; j < blocks.length; j++) 
+					playerBlockCollision();
+					
+					for (var i:int = 0; i < killboxes.length; i++) 
 					{
-						var block:Block = blocks[j];
+						var killbox:KillBox = killboxes[i];
 						
-						if (crate.hitTestObject(block))
+						if (player1.hitTestObject(killbox))
 						{
-							
-							if (crate.y <= block.y)
-							{
-								crate.block = block;
-														
-								//Breaks out of for loop
-								j = blocks.length - 1;
-								
-							}
+							killbox.Activate(player1);
+						}	
+					}
+					
+					//Algorithm for multiple vines
+					for (var i:int = 0; i < vines.length; i++) 
+					{
+						var vine:climbingVine = vines[i];
+						
+						if (player1.hitTestObject(vine))
+						{
+							player1.bCanClimb = true;
+							i = vines.length;
 						}
 						else
 						{
-							crate.block = null;
+							player1.bCanClimb = false;
+						}
+					}
+					
+					//Algorithm for falling platforms
+					for (var i:int = 0; i < fallingBoxes.length; i++) 
+					{
+						var fallingBox:movingBlock = fallingBoxes[i];
+						fallingBoxes.splice(i,1);
+						
+						if (player1.hitTestObject(fallingBox))
+						{
+							fallingBox.bStoodOn = true;
 						}	
 						
-					}
+						fallingBox.Update();
 						
-/*					for (var j:int = 0; j < crates.length; j++) 
+						fallingBoxes.splice(i,0, fallingBox);
+					}
+					
+					for (var i:int = 0; i < crates.length; i++)
 					{
-						if (j != i)
+						//crate colliding with platforms
+						
+						var crate:Crate = crates[i];
+											
+						for (var j:int = 0; j < blocks.length; j++) 
 						{
-							var crate1:Crate = crates[j];
+							var block:Block = blocks[j];
 							
-							if (crate.hitTestObject(crate1))
+							if (crate.hitTestObject(block))
 							{
 								
-								if (crate.y <= crate1.y)
+								if (crate.y <= block.y)
 								{
-									crate.crate = crate1;
+									crate.block = block;
 															
 									//Breaks out of for loop
-									j = crate1.length - 1;
+									j = blocks.length - 1;
 									
 								}
 							}
 							else
 							{
-								crate.crate1 = null;
+								crate.block = null;
 							}	
+							
 						}
-						
-					}
-*/
-					
-					if (player1.hitTestObject(crate))
-					{
-						
-						var playerFeet:int = player1.y + (player1.height / 2);
-						var playerHead:int = player1.y - (player1.height / 2);
-						
-						var crateTop:int = crate.y - (crate.height / 2);
-						var crateBottom:int = crate.y + (crate.height / 2);
-						
-						if ( (playerHead < crateTop) && (playerFeet > crateBottom) )
+							
+	/*					for (var j:int = 0; j < crates.length; j++) 
 						{
-							trace("pushing");
-							crate.roll(player1);
-						}
-	/*					else if (playerFeet < crateBottom)
-						{
-							trace("above");
-							if ( player1.block == null )
+							if (j != i)
 							{
-								trace("Player on block!");
-								player1.block = crate as Block;
+								var crate1:Crate = crates[j];
+								
+								if (crate.hitTestObject(crate1))
+								{
+									
+									if (crate.y <= crate1.y)
+									{
+										crate.crate = crate1;
+																
+										//Breaks out of for loop
+										j = crate1.length - 1;
+										
+									}
+								}
+								else
+								{
+									crate.crate1 = null;
+								}	
 							}
+							
+						}
+	*/
+						
+						if (player1.hitTestObject(crate))
+						{
+							
+							var playerFeet:int = player1.y + (player1.height / 2);
+							var playerHead:int = player1.y - (player1.height / 2);
+							
+							var crateTop:int = crate.y - (crate.height / 2);
+							var crateBottom:int = crate.y + (crate.height / 2);
+							
+							if ( (playerHead < crateTop) && (playerFeet > crateBottom) )
+							{
+								trace("pushing");
+								crate.roll(player1);
+							}
+		/*					else if (playerFeet < crateBottom)
+							{
+								trace("above");
+								if ( player1.block == null )
+								{
+									trace("Player on block!");
+									player1.block = crate as Block;
+								}
+							}
+							
+		*/				
 						}
 						
-	*/				
+						crate.Update(player1);
+						
+						crateBlockCollision(crate);
 					}
 					
-					crate.Update(player1);
-					
-					crateBlockCollision(crate);
-				}
-				
-				if (transition != null)
-				{
-					if (player1.hitTestObject(transition))
+					if (transition != null)
 					{
-						bFinished = true;
+						if (player1.hitTestObject(transition))
+						{
+							bFinished = true;
+						}
 					}
 				}
 				
@@ -416,6 +418,19 @@ package
 			level = null;
 			
 		}
+		
+		public function Restart():void
+		{
+			trace("Restart");
+			
+			stageLink.removeChild(level);
+					
+			//Resets the level variable
+			level = new Level6;
+			
+			init(stageLink);
+		}
+		
 	}
 
 }

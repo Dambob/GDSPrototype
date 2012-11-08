@@ -130,83 +130,85 @@ package
 			{	
 				//Immediately resets the level on death
 				//Perhaps use a counter or button press to allow death animations etc. to continue
-				if (player1.bDead) 
+				if (player1.State == 3) 
 				{					
-					stageLink.removeChild(level);
+					if (player1.currentAnim.currentFrame == player1.currentAnim.totalFrames - 1)
+					{
+						Restart();
+					}
 					
-					//Resets the level variable
-					level = new Level4;	
-					
-					init(stageLink);
-				}
-				
-				player1.Update(e);
-				
-				//Algorithm for climbable objects
-				if (player1.hitTestObject(vine))
-				{
-					player1.bCanClimb = true;
 				}
 				else
 				{
-					player1.bCanClimb = false;
-				}
-				
-				//Algorithm for killboxes
-				for (var i:int = 0; i < killboxes.length; i++) 
-				{
-					var killbox:KillBox = killboxes[i];
 					
-					if (player1.hitTestObject(killbox))
+					player1.Update(e);
+					
+					//Algorithm for climbable objects
+					if (player1.hitTestObject(vine))
 					{
-						killbox.Activate(player1);
-					}	
-				}
-				
-				
-				//Algorithm for falling platforms
-				for (var i:int = 0; i < fallingBoxes.length; i++) 
-				{
-					var fallingBox:movingBlock = fallingBoxes[i];
-					fallingBoxes.splice(i,1);
-					
-					if (player1.hitTestObject(fallingBox))
+						player1.bCanClimb = true;
+					}
+					else
 					{
-						fallingBox.bStoodOn = true;
-					}	
+						player1.bCanClimb = false;
+					}
 					
-					fallingBox.Update();
+					//Algorithm for killboxes
+					for (var i:int = 0; i < killboxes.length; i++) 
+					{
+						var killbox:KillBox = killboxes[i];
+						
+						if (player1.hitTestObject(killbox))
+						{
+							killbox.Activate(player1);
+						}	
+					}
 					
-					fallingBoxes.splice(i,0, fallingBox);
-				}
+					
+					//Algorithm for falling platforms
+					for (var i:int = 0; i < fallingBoxes.length; i++) 
+					{
+						var fallingBox:movingBlock = fallingBoxes[i];
+						fallingBoxes.splice(i,1);
+						
+						if (player1.hitTestObject(fallingBox))
+						{
+							fallingBox.bStoodOn = true;
+						}	
+						
+						fallingBox.Update();
+						
+						fallingBoxes.splice(i,0, fallingBox);
+					}
 
-				
-				playerBlockCollision();
-				
-				if (transition != null)
-				{
-					if (player1.hitTestObject(transition))
-					{
-						bFinished = true;
-					}
-				}
-				
-				if (player1.hitTestObject(cranes[0]))
-				{
-					bOnCrane = true;
-				}
-				
-				if (bOnCrane)
-				{
-					cranes[0].y += craneSpeed;
-					cranes[1].y -= craneSpeed;
 					
-					craneSpeed++;
-					if (craneSpeed > 5)
+					playerBlockCollision();
+					
+					if (transition != null)
 					{
-						craneSpeed = 5;
+						if (player1.hitTestObject(transition))
+						{
+							bFinished = true;
+						}
 					}
 					
+					if (player1.hitTestObject(cranes[0]))
+					{
+						bOnCrane = true;
+					}
+					
+					if (bOnCrane)
+					{
+						cranes[0].y += craneSpeed;
+						cranes[1].y -= craneSpeed;
+						
+						craneSpeed++;
+						if (craneSpeed > 5)
+						{
+							craneSpeed = 5;
+						}
+						
+					}
 				}
 				
 			}		
@@ -294,6 +296,18 @@ package
 			
 			level = null;
 			
+		}
+		
+		public function Restart():void
+		{
+			trace("Restart");
+			
+			stageLink.removeChild(level);
+					
+			//Resets the level variable
+			level = new Level4;
+			
+			init(stageLink);
 		}
 		
 	}

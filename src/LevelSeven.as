@@ -105,50 +105,52 @@ package
 			{	
 				//Immediately resets the level on death
 				//Perhaps use a counter or button press to allow death animations etc. to continue
-				if (player1.bDead) 
+				if (player1.State == 3) 
 				{					
-					stageLink.removeChild(level);
-					
-					//Resets the level variable
-					level = new Level7;	
-					
-					init(stageLink);
-				}
-				
-				player1.Update(e);
-				
-				playerBlockCollision();
-				
-				for (var i:int = 0; i < killboxes.length; i++) 
-				{
-					var killbox:KillBox = killboxes[i];
-					
-					if (player1.hitTestObject(killbox))
+					if (player1.currentAnim.currentFrame == player1.currentAnim.totalFrames - 1)
 					{
-						killbox.Activate(player1);
-					}	
-				}
-				
-				for (var i:int = 0; i < vines.length; i++) 
-				{
-					var vine:climbingVine = vines[i];
-					
-					if (player1.hitTestObject(vine))
-					{
-						player1.bCanClimb = true;
-						i = vines.length;
+						Restart();
 					}
-					else
-					{
-						player1.bCanClimb = false;
-					}
+					
 				}
-				
-				if (transition != null)
+				else
 				{
-					if (player1.hitTestObject(transition))
+				
+					player1.Update(e);
+					
+					playerBlockCollision();
+					
+					for (var i:int = 0; i < killboxes.length; i++) 
 					{
-						bFinished = true;
+						var killbox:KillBox = killboxes[i];
+						
+						if (player1.hitTestObject(killbox))
+						{
+							killbox.Activate(player1);
+						}	
+					}
+					
+					for (var i:int = 0; i < vines.length; i++) 
+					{
+						var vine:climbingVine = vines[i];
+						
+						if (player1.hitTestObject(vine))
+						{
+							player1.bCanClimb = true;
+							i = vines.length;
+						}
+						else
+						{
+							player1.bCanClimb = false;
+						}
+					}
+					
+					if (transition != null)
+					{
+						if (player1.hitTestObject(transition))
+						{
+							bFinished = true;
+						}
 					}
 				}
 				
@@ -239,6 +241,19 @@ package
 			level = null;
 			
 		}
+		
+		public function Restart():void
+		{
+			trace("Restart");
+			
+			stageLink.removeChild(level);
+					
+			//Resets the level variable
+			level = new Level7;
+			
+			init(stageLink);
+		}
+		
 	}
 
 }

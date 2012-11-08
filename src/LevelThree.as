@@ -87,29 +87,30 @@ package
 			{	
 				//Immediately resets the level on death
 				//Perhaps use a counter or button press to allow death animations etc. to continue
-				if (player1.bDead) 
+				if (player1.State == 3) 
 				{					
-					stageLink.removeChild(level);
-					
-					//Resets the level variable
-					level = new Level3;	
-					
-					init(stageLink);
-				}
-				
-				player1.Update(e);
-				
-				
-				playerBlockCollision();
-				
-				if (transition != null)
-				{
-					if (player1.hitTestObject(transition))
+					if (player1.currentAnim.currentFrame == player1.currentAnim.totalFrames - 1)
 					{
-						bFinished = true;
+						Restart();
 					}
+					
+					
 				}
-				
+				else
+				{
+					player1.Update(e);
+					
+					
+					playerBlockCollision();
+					
+					if (transition != null)
+					{
+						if (player1.hitTestObject(transition))
+						{
+							bFinished = true;
+						}
+				}
+				}
 			}		
 			
 		}
@@ -196,6 +197,19 @@ package
 			
 			level = null;
 			
+		}
+		
+		public function Restart():void
+		{
+		
+			trace("Restart");
+			
+			stageLink.removeChild(level);
+					
+			//Resets the level variable
+			level = new Level3;
+			
+			init(stageLink);
 		}
 		
 	}

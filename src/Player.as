@@ -36,11 +36,11 @@ package
 		public var spawn:playerSpawn = null;
 		public var bDead:Boolean = false;
 		
-		private var currentAnim:MovieClip = null;
+		public var currentAnim:MovieClip = null;
 		private var idleAnim:MovieClip = new IdleAnim();
 		private var runAnim:MovieClip = new RunAnim();
 		private var jumpAnim:MovieClip = new JumpAnim();
-		private var deathAnim:MovieClip = new IdleAnim();
+		public var deathAnim:MovieClip = new DeathAnim();
 		private var climbAnim:MovieClip = new ClimbAnim();
 		private var animScale:int = 1;
 		
@@ -133,9 +133,6 @@ package
 				case 3: //dead
 					playAnim(deathAnim);
 					
-					//Currently redundant as level is recreated on death
-					//Keep as it may be useful with larger levels
-					Respawn();
 					break;
 				case 4: //climbing
 					
@@ -327,7 +324,7 @@ package
 			}
 		}
 		
-		private function Respawn():void
+		public function Respawn():void
 		{
 			trace ("Respawning player");
 			if (spawn != null)
