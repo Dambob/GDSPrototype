@@ -20,6 +20,7 @@ package
 		private var vines:Array = null;
 		private var crates:Array = null;
 		private var fallingBoxes:Array = null;
+		private var transition:transitionBlock = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -41,6 +42,7 @@ package
 			vines = new Array;
 			crates = new Array;
 			fallingBoxes = new Array;
+			transition = new transitionBlock;
 				
 			stageLink = stageRef;
 			
@@ -101,6 +103,11 @@ package
 					var fallingBox:movingBlock = object as movingBlock
 					
 					fallingBoxes.push(fallingBox);
+				}
+				else if (object is transitionBlock)
+				{
+					trace("Found transition block at " + i);
+					transition = object as transitionBlock;
 				}
 								
 			}	
@@ -263,6 +270,14 @@ package
 					crateBlockCollision(crate);
 				}
 				
+				if (transition != null)
+				{
+					if (player1.hitTestObject(transition))
+					{
+						bFinished = true;
+					}
+				}
+				
 			}		
 			
 		}
@@ -303,7 +318,7 @@ package
 		private function playerBlockCollision():void
 		{
 			
-			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			if (player1.State == 1 || (player1.State == 2 && (player1.bLeft || player1.bRight) ) )
 			{
 				playerHorizBlockCollision();
 			}

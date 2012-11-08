@@ -16,6 +16,7 @@ package
 		private var player1:Player =  null;
 		private var blocks:Array = null;
 		private var spawn:playerSpawn = null;
+		private var transition:transitionBlock = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -33,6 +34,7 @@ package
 			player1 =  new Player;
 			blocks = new Array;
 			spawn = new playerSpawn;
+			transition = new transitionBlock;
 				
 			stageLink = stageRef;
 			
@@ -62,6 +64,11 @@ package
 					trace("Found player spawn at " + i);
 
 					spawn = object as playerSpawn;
+				}
+				else if (object is transitionBlock)
+				{
+					trace("Found transition block at " + i);
+					transition = object as transitionBlock;
 				}
 				
 			}	
@@ -95,6 +102,14 @@ package
 				
 				playerBlockCollision();
 				
+				if (transition != null)
+				{
+					if (player1.hitTestObject(transition))
+					{
+						bFinished = true;
+					}
+				}
+				
 			}		
 			
 		}
@@ -102,7 +117,7 @@ package
 		private function playerBlockCollision():void
 		{
 			
-			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			if (player1.State == 1 || (player1.State == 2 && (player1.bLeft || player1.bRight) ) )
 			{
 				playerHorizBlockCollision();
 			}

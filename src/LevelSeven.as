@@ -18,6 +18,7 @@ package
 		private var spawn:playerSpawn = null;
 		private var killboxes:Array = null;
 		private var vines:Array = null;
+		private var transition:transitionBlock = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -37,6 +38,7 @@ package
 			spawn = new playerSpawn;
 			killboxes = new Array;
 			vines = new Array;
+			transition = new transitionBlock;
 				
 			stageLink = stageRef;
 			
@@ -80,6 +82,11 @@ package
 					var vine:climbingVine = object as climbingVine
 					
 					vines.push(vine);
+				}
+				else if (object is transitionBlock)
+				{
+					trace("Found transition block at " + i);
+					transition = object as transitionBlock;
 				}
 				
 			}	
@@ -137,6 +144,14 @@ package
 					}
 				}
 				
+				if (transition != null)
+				{
+					if (player1.hitTestObject(transition))
+					{
+						bFinished = true;
+					}
+				}
+				
 			}		
 			
 		}
@@ -144,7 +159,7 @@ package
 		private function playerBlockCollision():void
 		{
 			
-			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			if (player1.State == 1 || (player1.State == 2 && (player1.bLeft || player1.bRight) ) )
 			{
 				playerHorizBlockCollision();
 			}

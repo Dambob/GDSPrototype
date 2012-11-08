@@ -18,6 +18,10 @@ package
 		private var vine:climbingVine = null;
 		private var killboxes:Array = null;
 		private var fallingBoxes:Array = null;
+		private var transition:transitionBlock = null;
+		private var cranes:Array = null;
+		private var bOnCrane:Boolean = false;
+		private var craneSpeed:int = 0;
 		
 		private var stageLink:Stage = null;
 		
@@ -38,6 +42,10 @@ package
 			killboxes = new Array;			
 			vine = new climbingVine;
 			fallingBoxes = new Array;
+			transition = new transitionBlock;
+			cranes = new Array;
+			bOnCrane = false;
+			craneSpeed = 0;
 				
 			stageLink = stageRef;
 			
@@ -81,6 +89,11 @@ package
 					
 					killboxes.push(killbox);
 				}
+				else if (object is transitionBlock)
+				{
+					trace("Found transition block at " + i);
+					transition = object as transitionBlock;
+				}
 				
 				if (object is movingBlock)
 				{
@@ -90,6 +103,15 @@ package
 					var fallingBox:movingBlock = object as movingBlock
 					
 					fallingBoxes.push(fallingBox);
+				}
+				
+				if (object is craneBlock)
+				{
+					trace("Found crane block at " + i);
+					
+					var crane:craneBlock = object as craneBlock;
+					
+					cranes.push(crane);
 				}
 				
 			}	
@@ -161,6 +183,32 @@ package
 				
 				playerBlockCollision();
 				
+				if (transition != null)
+				{
+					if (player1.hitTestObject(transition))
+					{
+						bFinished = true;
+					}
+				}
+				
+				if (player1.hitTestObject(cranes[0]))
+				{
+					bOnCrane = true;
+				}
+				
+				if (bOnCrane)
+				{
+					cranes[0].y += craneSpeed;
+					cranes[1].y -= craneSpeed;
+					
+					craneSpeed++;
+					if (craneSpeed > 5)
+					{
+						craneSpeed = 5;
+					}
+					
+				}
+				
 			}		
 			
 		}
@@ -168,7 +216,7 @@ package
 		private function playerBlockCollision():void
 		{
 			
-			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			if (player1.State == 1 || (player1.State == 2 && (player1.bLeft || player1.bRight) ) )
 			{
 				playerHorizBlockCollision();
 			}

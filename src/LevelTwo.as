@@ -18,6 +18,7 @@ package
 		private var killboxes:Array = null;
 		private var vine:climbingVine = null;
 		private var crates:Array = null;
+		private var transition:transitionBlock = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -39,6 +40,7 @@ package
 			killboxes = new Array;
 			vine = new climbingVine;
 			crates = new Array;
+			transition = new transitionBlock;
 				
 			stageLink = stageRef;
 			
@@ -88,6 +90,11 @@ package
 					
 					crates.push(crate);
 					
+				}
+				else if (object is transitionBlock)
+				{
+					trace("Found transition block at " + i);
+					transition = object as transitionBlock;
 				}
 			}	
 			
@@ -225,6 +232,14 @@ package
 					
 					crate.Update(player1);
 				}
+				
+				if (transition != null)
+				{
+					if (player1.hitTestObject(transition))
+					{
+						bFinished = true;
+					}
+				}
 
 			}		
 			
@@ -232,8 +247,10 @@ package
 		
 		private function playerBlockCollision():void
 		{
-			
-			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			//Player walking
+			//or
+			//Player jumping and moving
+			if (player1.State == 1 || (player1.State == 2 && (player1.bLeft || player1.bRight) ) )
 			{
 				playerHorizBlockCollision();
 			}

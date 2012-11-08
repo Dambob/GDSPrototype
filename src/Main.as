@@ -30,7 +30,7 @@ package
 		public var bLoading:Boolean = false;
 		public var versionNumber:TextField = null;
 		public var textFormat:TextFormat = null;
-		public var version:String = "V 0.3";
+		public var version:String = "V 0.3.2";
 		
 		public var bQuit:Boolean = false;
 		
@@ -124,6 +124,12 @@ package
 							
 							bQuit = false;
 						}
+						else if (level1.bFinished)
+						{
+							level1.Delete();
+							level1 = null;
+							currentLevel = 2;
+						}
 						
 					}
 					else
@@ -148,6 +154,12 @@ package
 							
 							bQuit = false;
 						}
+						else if (level2.bFinished)
+						{
+							level2.Delete();
+							level2 = null;
+							currentLevel = 3;
+						}
 					}
 					else
 					{
@@ -170,6 +182,12 @@ package
 							currentLevel = 0;
 							
 							bQuit = false;
+						}
+						else if (level3.bFinished)
+						{
+							level3.Delete();
+							level3 = null;
+							currentLevel = 4;
 						}
 					}
 					else
@@ -194,6 +212,12 @@ package
 							
 							bQuit = false;
 						}
+						else if (level4.bFinished)
+						{
+							level4.Delete();
+							level4 = null;
+							currentLevel = 5;
+						}
 					}
 					else
 					{
@@ -216,6 +240,12 @@ package
 							currentLevel = 0;
 							
 							bQuit = false;
+						}
+						else if (level5.bFinished)
+						{
+							level5.Delete();
+							level5 = null;
+							currentLevel = 6;
 						}
 					}
 					else
@@ -240,6 +270,12 @@ package
 							
 							bQuit = false;
 						}
+						else if (level6.bFinished)
+						{
+							level6.Delete();
+							level6 = null;
+							currentLevel = 7;
+						}
 					}
 					else
 					{
@@ -262,6 +298,12 @@ package
 							currentLevel = 0;
 							
 							bQuit = false;
+						}
+						else if (level7.bFinished)
+						{
+							level7.Delete();
+							level7 = null;
+							currentLevel = 0;
 						}
 					}
 					else

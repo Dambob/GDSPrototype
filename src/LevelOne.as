@@ -19,6 +19,7 @@ package
 		private var trap:fallingTrap =  null;
 		private var spawn:playerSpawn =  null;
 		private var rock2:rock =  null;	
+		private var transition:transitionBlock = null;
 		
 		private var stageLink:Stage;
 		
@@ -39,6 +40,7 @@ package
 			trap = new fallingTrap;
 			spawn = new playerSpawn;
 			rock2 = new rock;
+			transition = new transitionBlock;
 			
 			stageLink = stageRef;
 			
@@ -68,6 +70,11 @@ package
 					trace("Found player spawn at " + i);
 					spawn = object as playerSpawn;
 				}
+				else if (object is transitionBlock)
+				{
+					trace("Found transition block at " + i);
+					transition = object as transitionBlock;
+				}
 				else if (object is Trigger)
 				{
 					trace("Found trigger at " + i);
@@ -84,6 +91,7 @@ package
 					trace("Found rock at " + i);
 					rock2 = object as rock;
 				}
+				
 			}
 			
 			trap.Floor = blocks[0];
@@ -158,6 +166,14 @@ package
 					rock2.roll(player1);
 				}
 				
+				if (transition != null)
+				{
+					if (player1.hitTestObject(transition))
+					{
+						bFinished = true;
+					}
+				}
+				
 			}		
 		}
 		
@@ -197,7 +213,7 @@ package
 		private function playerBlockCollision():void
 		{
 			
-			if ( player1.State == 1 || (player1.State != 2 && player1.State != 4 && player1.State != 5))
+			if (player1.State == 1 || (player1.State == 2 && (player1.bLeft || player1.bRight) ) )
 			{
 				playerHorizBlockCollision();
 			}

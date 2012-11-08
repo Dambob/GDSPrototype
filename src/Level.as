@@ -13,6 +13,8 @@ package
 		//Parent for all level code
 		//Do not use for Flash level
 		
+		public var bFinished:Boolean = false;
+		
 		public function Level() 
 		{
 			
