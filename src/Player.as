@@ -37,11 +37,13 @@ package
 		public var bDead:Boolean = false;
 		
 		public var currentAnim:MovieClip = null;
+		
 		private var idleAnim:MovieClip = new IdleAnim();
 		private var runAnim:MovieClip = new RunAnim();
 		private var jumpAnim:MovieClip = new JumpAnim();
 		public var deathAnim:MovieClip = new DeathAnim();
 		private var climbAnim:MovieClip = new ClimbAnim();
+		
 		private var animScale:int = 1;
 		
 		public var bCanClimb:Boolean = false;
