@@ -52,7 +52,7 @@
 					//player at right
 					if ( (p.x - (p.width / 2)) < (x + width / 2) )
 					{
-						x -= (p.x + (p.width / 2)) - (x - width / 2);
+						x -= (x + width / 2) - (p.x - (p.width / 2));
 					}
 				}
 			}
