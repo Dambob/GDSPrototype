@@ -282,23 +282,24 @@ package
 			
 		}
 		
+		public function MoveX(x1:int):void
+		{
+			x += x1;
+			level.x -= x1;
+		}
+		
 		public function Moving():void
 		{
 			//No horizontal velocity but can be added in easily.
 			if (bRight)
 			{
-				x += maxVel;
-				
-				//Apply inverse to level for scrolling 
-				level.x -= maxVel;
+				MoveX(maxVel);
 				
 				animScale = 1;
 			}
 			else if (bLeft)
 			{
-				x -= maxVel;
-				
-				level.x += maxVel;
+				MoveX(-maxVel);
 				
 				animScale = -1;
 			}

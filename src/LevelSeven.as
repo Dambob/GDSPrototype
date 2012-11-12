@@ -19,6 +19,7 @@ package
 		private var killboxes:Array = null;
 		private var vines:Array = null;
 		private var transition:transitionBlock = null;
+		private var belt:conveyorBelt = null;
 		
 		private var stageLink:Stage = null;
 		
@@ -39,6 +40,7 @@ package
 			killboxes = new Array;
 			vines = new Array;
 			transition = new transitionBlock;
+			belt = new conveyorBelt;
 				
 			stageLink = stageRef;
 			
@@ -87,6 +89,12 @@ package
 				{
 					trace("Found transition block at " + i);
 					transition = object as transitionBlock;
+				}
+				
+				if (object is conveyorBelt)
+				{
+					trace("Found conveyor belt at " + i);
+					belt = object as conveyorBelt;					
 				}
 				
 			}	
@@ -151,6 +159,21 @@ package
 						{
 							bFinished = true;
 						}
+					}
+					
+					if (belt != null)
+					{
+						if (player1.hitTestObject(belt))
+						{
+							belt.bStoodOn = true;
+						}
+						else
+						{
+							belt.bStoodOn = false;
+						}
+						
+						belt.Update(player1);
+						
 					}
 				}
 				
