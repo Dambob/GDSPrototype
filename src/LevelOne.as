@@ -159,7 +159,7 @@ package
 					
 					rockBlockCollision();
 		
-					triggerTrap.Update(player1, rock2);			
+					triggerTrap.Update(player1, rock2);		
 					
 					if (player1.hitTestObject(rock2))
 					{

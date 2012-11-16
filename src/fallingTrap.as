@@ -20,7 +20,7 @@ package
 		public function Update():void
 		{			
 			if (bFalling)
-			{
+			{				
 				if (hitTestObject(Floor))
 				{
 					bTrapDone = true;
@@ -33,6 +33,9 @@ package
 			}
 			
 			y += speed;
+			
+			trace(speed);
+			trace(y);
 		}
 		
 		override public function Spring(p:Player):void

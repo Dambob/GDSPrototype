@@ -34,8 +34,7 @@ package
 				}
 				
 				if (trap.bTrapDone)
-				{
-					
+				{		
 					trap.bFalling = false;
 					
 					bExpired = true;
@@ -43,17 +42,6 @@ package
 					bRotate = true;
 				}
 			}
-/*			
-			if (bRotate && !b.hitTestObject(b2))
-			{
-				b.rotation -= 3;
-				
-			}
-			else if (b.hitTestObject(b2))
-			{
-				bRotate = false;
-			}
-*/
 			
 		}
 		
