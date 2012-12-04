@@ -197,12 +197,20 @@ package
 						bOnCrane = true;
 					}
 					
+					
+					if (cranes[1].y <= 350)
+					{		
+						bOnCrane = false;
+						craneSpeed = 0;
+					}
+					
 					if (bOnCrane)
 					{
 						cranes[0].y += craneSpeed;
 						cranes[1].y -= craneSpeed;
 						
 						craneSpeed++;
+						
 						if (craneSpeed > 5)
 						{
 							craneSpeed = 5;

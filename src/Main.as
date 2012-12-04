@@ -30,16 +30,14 @@ package
 		public var bLoading:Boolean = false;
 		public var versionNumber:TextField = null;
 		public var textFormat:TextFormat = null;
-		public var version:String = "V 0.4.2";
+		public var version:String = "V 0.4.4";
 		
 		public var bQuit:Boolean = false;
 		
 		public function Main():void 
 		{
 			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-			
-			
+			else addEventListener(Event.ADDED_TO_STAGE, init);		
 		}
 		
 		private function init(e:Event = null):void 
@@ -52,12 +50,9 @@ package
 			
 			//Init everthing here
 			currentLevel = 0;		
-			
-			
-			
+						
 			stage.addEventListener(Event.ENTER_FRAME, Update);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);			
 		}
 		
 		public function Update(e:Event):void
