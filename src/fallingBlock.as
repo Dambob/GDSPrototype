@@ -21,7 +21,7 @@ package
 				Counter++;
 			}
 			
-			if (Counter >= 60)
+			if (Counter >= 40)
 			{
 				x -= 1000;
 				Counter = 0;

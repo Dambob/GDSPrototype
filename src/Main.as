@@ -30,7 +30,9 @@ package
 		public var bLoading:Boolean = false;
 		public var versionNumber:TextField = null;
 		public var textFormat:TextFormat = null;
-		public var version:String = "V 0.4.4";
+		public var version:String = "Showcase";
+		
+		public var levelMenu:LevelMenu = null;
 		
 		public var bQuit:Boolean = false;
 		
@@ -67,13 +69,13 @@ package
 			{
 				case 0: //menu for selecting level
 						//will be for testing only
-					if (levelDebug != null)
+					if (levelMenu != null)
 					{	
-						for (var i:int = 0; i < levelDebug.buttons.length; i++)
+						for (var i:int = 0; i < levelMenu.buttons.length; i++)
 						{
-							if (levelDebug.buttons[i].bLoad)
+							if (levelMenu.buttons[i].bLoad)
 							{
-								currentLevel = levelDebug.buttons[i].level;
+								currentLevel = levelMenu.buttons[i].level;
 									
 								bLoading = true;
 								
@@ -82,9 +84,11 @@ package
 						
 						if (bLoading)
 						{
-							levelDebug.Delete();
+						//	levelDebug.Delete();
+							levelMenu.Delete();
 							
-							levelDebug = null;
+						//	levelDebug = null;
+							levelMenu = null;
 							stage.removeChild(versionNumber);
 							
 							bLoading = false;
@@ -93,9 +97,13 @@ package
 					}
 					else
 					{
-						trace("Init debug");
-						levelDebug = new LevelDebug;
-						levelDebug.init(stage);
+					//	trace("Init debug");
+					//	levelDebug = new LevelDebug;
+					//	levelDebug.init(stage);
+					
+						trace("Init menu");					
+						levelMenu = new LevelMenu;
+						levelMenu.init(stage);
 						
 						//Adds a basic version number
 						textFormat = new TextFormat;
@@ -105,7 +113,9 @@ package
 						versionNumber.defaultTextFormat = textFormat;
 						versionNumber.x = 50;
 						versionNumber.y = 550;
+						versionNumber.width = 800;
 						versionNumber.text = version;
+						
 						stage.addChild(versionNumber);
 					}
 					break;
@@ -158,7 +168,8 @@ package
 						{
 							level2.Delete();
 							level2 = null;
-							currentLevel = 3;
+					//		currentLevel = 3;
+							currentLevel = 4;
 						}
 					}
 					else
@@ -216,7 +227,8 @@ package
 						{
 							level4.Delete();
 							level4 = null;
-							currentLevel = 5;
+						//	currentLevel = 5;
+							currentLevel = 7;
 						}
 					}
 					else
